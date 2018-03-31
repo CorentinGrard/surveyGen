@@ -1,0 +1,17 @@
+Programming guidelines:
+  
+  
+  For GUI's:
+    Name variables using an identifier of the object followed by the name of the variable. For example,
+    if you want to create a button and you want to name it "myButton", name it "btnMyButton" instead. This will help to have 
+    identified the components that can have the same name but different form. I suggest some abreviations of different components:
+      - Button: btn
+      - TextField: tf
+      - CheckBox: cb
+      - MenuItem: mi
+      - Label: lb
+      
+     If you need other components, feel free to decide which identifier use and please modify this file telling us what identifier
+     name you used.
+     
+  
