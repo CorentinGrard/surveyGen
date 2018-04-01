@@ -72,18 +72,18 @@ public class StartingWIndow extends javax.swing.JFrame {
 
     /*Action on NewSurvey button*/
     private void btnNewSurveyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewSurveyActionPerformed
-        SurveyCreation srvC = new SurveyCreation();
-        srvC.setExtendedState(MAXIMIZED_BOTH);
-        srvC.setVisible(true);
+        NewSurvey newsurvey = new NewSurvey();
+        newsurvey.setExtendedState(MAXIMIZED_BOTH);
+        newsurvey.setVisible(true);
         dispose(); 
     }//GEN-LAST:event_btnNewSurveyActionPerformed
 
     /*Action on NewSurvey menu item*/
     private void miNewSurveyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNewSurveyActionPerformed
-        SurveyCreation srvC = new SurveyCreation();
-        srvC.setExtendedState(MAXIMIZED_BOTH);
-        srvC.setVisible(true);
-        dispose();  
+        NewSurvey newsurvey = new NewSurvey();
+        newsurvey.setExtendedState(MAXIMIZED_BOTH);
+        newsurvey.setVisible(true);
+        dispose(); 
     }//GEN-LAST:event_miNewSurveyActionPerformed
 
     /**

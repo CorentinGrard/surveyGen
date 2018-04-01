@@ -32,6 +32,7 @@ public class SurveyCreation extends javax.swing.JFrame {
         btnConcurrent = new javax.swing.JButton();
         btnAlternative = new javax.swing.JButton();
         btnFreeAnswer = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -55,6 +56,8 @@ public class SurveyCreation extends javax.swing.JFrame {
 
         btnFreeAnswer.setText("Free Answer Question");
 
+        btnSave.setText("Save");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -62,10 +65,17 @@ public class SurveyCreation extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnConcurrent, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAlternative, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFreeAnswer, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnConcurrent, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAlternative, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnFreeAnswer)
+                                .addGap(15, 15, 15)))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnSave)
+                        .addGap(81, 81, 81))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -74,9 +84,11 @@ public class SurveyCreation extends javax.swing.JFrame {
                 .addComponent(btnConcurrent)
                 .addGap(50, 50, 50)
                 .addComponent(btnAlternative)
-                .addGap(46, 46, 46)
+                .addGap(53, 53, 53)
                 .addComponent(btnFreeAnswer)
-                .addContainerGap(143, Short.MAX_VALUE))
+                .addGap(45, 45, 45)
+                .addComponent(btnSave)
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
@@ -154,6 +166,7 @@ public class SurveyCreation extends javax.swing.JFrame {
     private javax.swing.JButton btnAlternative;
     private javax.swing.JButton btnConcurrent;
     private javax.swing.JButton btnFreeAnswer;
+    private javax.swing.JButton btnSave;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

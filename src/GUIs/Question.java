@@ -18,11 +18,37 @@ import java.util.Iterator;
  */
 public class Question extends javax.swing.JPanel {
 
-    private int id;
-    int contOpt = 0;
-    
+    private int idSurvey;
+    private int idQuestion;
+    private String title; 
+    private String description; //Ver donde colocamos la descripción
     private int tipo;
     
+    private int contOpt = 0;
+
+    public String getTitle(){
+        return title;
+    }
+    
+    public void setTitle(String title){
+        this.title = title;
+    }
+    
+    public int getidSurvey(){
+        return idSurvey;
+    }
+    
+    public void setIdSurvey(int idSvey){
+        this.idSurvey = idSvey;
+    }
+    
+    public String getDescription(){
+        return description;
+    }
+    
+    public void setDescription(String descript){
+        this.description = descript;
+    }
     public int getTipo() {
         return tipo;
     }
@@ -33,11 +59,11 @@ public class Question extends javax.swing.JPanel {
 
     
     public int getId() {
-        return id;
+        return idQuestion;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.idQuestion = id;
     }
   
     public Question() {
@@ -46,7 +72,7 @@ public class Question extends javax.swing.JPanel {
     
     public void QuestionInit(JPanel panel, int cont){
         
-        this.lbNumQuest.setText(String.valueOf(id+1));
+        this.lbNumQuest.setText(String.valueOf(idQuestion+1));
 
        
         /*Calculo del size de la pregunta*/
@@ -95,7 +121,11 @@ public class Question extends javax.swing.JPanel {
 
         lbTitleQuest.setText("Título:");
 
-        jTextField1.setText("jTextField1");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         btnEditQuest.setText("Edit");
 
@@ -159,7 +189,7 @@ public class Question extends javax.swing.JPanel {
     private void btnDeleteQuestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteQuestActionPerformed
         QuestionContainer panel = (QuestionContainer) this.getParent();
         //panel.updateQuestionsIndexes();
-        panel.deleteQuestion(id);
+        panel.deleteQuestion(idQuestion);
     }//GEN-LAST:event_btnDeleteQuestActionPerformed
 
     private void btnAddOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOptionActionPerformed
@@ -172,9 +202,13 @@ public class Question extends javax.swing.JPanel {
         this.updateUI();
         
         QuestionContainer questionContainer = (QuestionContainer)this.getParent();
-        questionContainer.updateQuestion(this,id);
+        questionContainer.updateQuestion(this,idQuestion);
         
     }//GEN-LAST:event_btnAddOptionActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     
 
