@@ -163,8 +163,8 @@ public class NewSurvey extends javax.swing.JFrame {
         String description = tfDescription.getText();
         String objective = tfObjective.getText();
         String values = "'"+title+"','"+description+"','"+objective+"','"+StartDate+"','"+FinalDate+"'";
-        ConnectionPostgres c = new ConnectionPostgres();
-        c.insert("survey", "(name,description,objective,startDate,finalDate)", values);
+       // ConnectionPostgres c = new ConnectionPostgres();
+       // c.insert("survey", "(name,description,objective,startDate,finalDate)", values);
     }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
