@@ -12,6 +12,7 @@ import GUIs.Question;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.JTextField;
 
 /**
  *
@@ -34,6 +35,8 @@ public class Question extends javax.swing.JPanel {
         //Validate that type=0,1,2
         this.type = type;
         this.initComponents();
+        if (type == 2){addTextBox();}
+        
     }
     
      
@@ -59,7 +62,7 @@ public class Question extends javax.swing.JPanel {
     public void setId(int id) {this.idQuestion = id;}
   /////////////////////////////////////
 
-    public void QuestionInit(JPanel panel, int cont){
+    public void QuestionInit(JPanel panel){
         
         this.lbNumQuest.setText(String.valueOf(idQuestion+1));
 
@@ -176,9 +179,13 @@ public class Question extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDeleteQuestActionPerformed
 
     private void btnAddOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOptionActionPerformed
-        Option newOption = new Option(this.getType(),contOpt++);
+        Option newOption = new Option();
+        newOption.setType(this.getType());
+        newOption.setIdOption(contOpt++);
         options.add(newOption);
-        newOption.OptionInit(this, idQuestion);
+        newOption.OptionInit(this);
+        QuestionContainer questionContainer = (QuestionContainer) this.getParent();
+        questionContainer.updateQuestion(this,idQuestion);
     }//GEN-LAST:event_btnAddOptionActionPerformed
 
      /*Method to deleteOptions from the Container*/
@@ -199,8 +206,8 @@ public class Question extends javax.swing.JPanel {
         
         for (Iterator<Option> iterator = this.options.iterator(); iterator.hasNext();) {
             Option option = iterator.next();
-            option.setId(contOpt);
-            option.OptionInit(this, contOpt++);
+            option.setIdOption(contOpt++);
+            option.OptionInit(this);
         }
         
         
@@ -216,6 +223,17 @@ public class Question extends javax.swing.JPanel {
             }
         }
         //IMPORTANT
+        this.revalidate();
+        this.repaint();
+    }
+    
+    /*Just in case it is Free Answer Question*/
+    public void addTextBox(){
+        Dimension thisDim = this.getPreferredSize();
+        JTextField tfAnswer = new JTextField();
+        tfAnswer.setBounds(30, thisDim.height, 250, 250);
+        this.setPreferredSize(new Dimension(thisDim.width,thisDim.height+250));
+        this.add(tfAnswer);
         this.revalidate();
         this.repaint();
     }

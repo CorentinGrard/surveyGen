@@ -10,59 +10,71 @@ import javax.swing.JRadioButton;
 
 public class Option extends javax.swing.JPanel {
     
-    private int id;
-    private int tipo;
+    private int idOption;
+    private int type;
   
     /*Constructor*/
-    public Option(int tipo, int cont) {
-        initComponents();
-        id = cont;
+    public Option() {
+       
     }
     
     /*Getters and Setters*/
 
-    public int getId() {
-        return id;
+    public int getIdOption() {
+        return idOption;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdOption(int idOption) {
+        this.idOption = idOption;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
     
     
-     public void OptionInit(JPanel panel, int idQuestion) {
-         
+    ////////////////
+    
+     public void OptionInit(JPanel panel) {
          
         Rectangle r = new Rectangle(0, 0, 100, 25);
         
-        if(tipo==0){
-            JCheckBox cbOption = new JCheckBox("Option "+String.valueOf(id+1));
+        if(type==0){
+            //It is neccessary to remove all components in order to have an updated CheckBox
+            this.removeAll();
+            initComponents();
+            JCheckBox cbOption = new JCheckBox("Option "+String.valueOf(this.idOption+1));
             cbOption.setBounds(r);
             this.add(cbOption);
-        }else if(tipo==1){
-            JRadioButton rbOption = new JRadioButton("Option "+String.valueOf(id+1));
+        }else if(type==1){
+            //It is neccessary to remove all components in order to have an updated RadioButton
+
+            this.removeAll();
+            initComponents();
+            JRadioButton rbOption = new JRadioButton("Option "+String.valueOf(idOption+1));
             rbOption.setBounds(r);
             this.add(rbOption);
         }
         
+        
+        
         this.revalidate();
         this.repaint();
-         
-         
-         
-         
+   
         Dimension questionDim = panel.getPreferredSize();
        // Option newOption = new Option(this.getType(),contOpt++);
         this.setBounds(20, questionDim.height, 450, 25);
-        
         
         panel.setPreferredSize(new Dimension(questionDim.width,questionDim.height+25));
         panel.add(this);
         panel.revalidate();
         panel.repaint();
         
-        QuestionContainer questionContainer = (QuestionContainer) panel.getParent();
-        questionContainer.updateQuestion((Question) panel,idQuestion);
+       
      }
    
     @SuppressWarnings("unchecked")
@@ -96,7 +108,7 @@ public class Option extends javax.swing.JPanel {
 
     private void btnDeleteQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteQuestionActionPerformed
         Question question = (Question) this.getParent();
-        question.deleteOption(id);
+        question.deleteOption(idOption);
         
         QuestionContainer questionContainer = (QuestionContainer) question.getParent();
         questionContainer.updateQuestion(question,question.getId());

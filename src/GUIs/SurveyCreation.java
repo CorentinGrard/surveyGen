@@ -55,6 +55,11 @@ public class SurveyCreation extends javax.swing.JFrame {
         });
 
         btnFreeAnswer.setText("Free Answer Question");
+        btnFreeAnswer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFreeAnswerActionPerformed(evt);
+            }
+        });
 
         btnSave.setText("Save");
 
@@ -126,6 +131,10 @@ public class SurveyCreation extends javax.swing.JFrame {
     private void btnConcurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConcurrentActionPerformed
         questionContainer.addQuestion(0); //just call to the method in the child component
     }//GEN-LAST:event_btnConcurrentActionPerformed
+
+    private void btnFreeAnswerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFreeAnswerActionPerformed
+        questionContainer.addQuestion(2);
+    }//GEN-LAST:event_btnFreeAnswerActionPerformed
   
 
 
