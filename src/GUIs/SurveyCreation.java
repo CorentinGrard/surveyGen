@@ -1,5 +1,6 @@
 package GUIs;
 
+import Logic.StoringManager;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,10 +9,27 @@ import javax.swing.JScrollPane;
 
 public class SurveyCreation extends javax.swing.JFrame {
 
+    int surveyID;
     QuestionContainer questionContainer = new QuestionContainer(); //panel on which questions will live
     JScrollPane scrollPane = new JScrollPane(); //useful to make scrolling when adding a lot of questions
-            
+           
     public SurveyCreation() {
+        this.surveyID = surveyID;
+        initComponents();
+        
+        /*Configuration of the Question Container and the Scroll Panel*/
+        questionContainer.setBounds(0,10,700,90);
+        questionContainer.setVisible(true);
+        questionContainer.setPreferredSize(new Dimension(700, 0));
+        this.add(questionContainer);
+        
+       // jScrollPane1.setViewportView(questionContainer);
+        jScrollPane1.getViewport().setView(questionContainer);
+    }
+    
+    
+    public SurveyCreation(int surveyID) {
+        this.surveyID = surveyID;
         initComponents();
         
         /*Configuration of the Question Container and the Scroll Panel*/
@@ -62,6 +80,11 @@ public class SurveyCreation extends javax.swing.JFrame {
         });
 
         btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -135,6 +158,11 @@ public class SurveyCreation extends javax.swing.JFrame {
     private void btnFreeAnswerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFreeAnswerActionPerformed
         questionContainer.addQuestion(2);
     }//GEN-LAST:event_btnFreeAnswerActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        StoringManager stMan = new StoringManager();
+        stMan.saveAllQuestions(questionContainer.questions, surveyID);
+    }//GEN-LAST:event_btnSaveActionPerformed
   
 
 
