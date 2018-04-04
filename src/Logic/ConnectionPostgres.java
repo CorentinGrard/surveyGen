@@ -15,42 +15,42 @@ import java.sql.Statement;
  * @author zoso
  */
 public class ConnectionPostgres {
-    
-    public ConnectionPostgres(){}
-    
+
+    public ConnectionPostgres() {
+    }
+
     //Create a method to establish de connection with the database
-    public Connection connectDB(){
+    public Connection connectDB() {
         String user = "postgres";
         String password = "1234";
         Connection c = null;
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager
-            .getConnection("jdbc:postgresql://localhost:5432/surveys",
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/surveys",
             user, password);
+
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        
+
         System.out.println("Opened database successfully");
         return c;
     }
-    
+
     //Method to insert any value in tables
     //Values can have different formats according with the type of table
     //survey -> (name,description,objective,startDate,finalDate)
     //question ->(id,idSurvey,title,description,type)
     //Option -> (id,description)
     //QuestionOptin -> (idSurvey,idQuestion,idOption)
-                    
-    public void insert(String tableName,String parameters,String values){
+    public void insert(String tableName, String parameters, String values) {
 
         try {
             Connection c = connectDB();
             Statement st = c.createStatement();
-            String sql = "INSERT INTO "+ tableName +" "+ parameters +" VALUES ("+values+");";
+            String sql = "INSERT INTO " + tableName + " " + parameters + " VALUES (" + values + ");";
             System.out.println(sql);
             st.executeUpdate(sql);
             st.close();
@@ -58,11 +58,10 @@ public class ConnectionPostgres {
             c.commit();
             c.close();
         } catch (Exception e) {
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
-        }          
+        }
     }
-    
    
     public int getIDLastRegister(String tableName){
         
@@ -83,10 +82,12 @@ public class ConnectionPostgres {
 
         } catch (Exception e){
             System.err.println(e.getClass().getName()+": "+e.getMessage());
+
         }
         
         return id;
     }
+
     
 //    public void insertOption(String valuesQuestionOption, String parameters, String descriptionNewOption){
 //
@@ -114,7 +115,6 @@ public class ConnectionPostgres {
 //            System.exit(0);
 //        }       
 //    }
-    
 //    //Method to insert a new Survey
 //    public void insertSurvey(String values){
 //        Connection c;
@@ -200,5 +200,4 @@ public class ConnectionPostgres {
 //        }    
 //    }
 //    
-    
 }

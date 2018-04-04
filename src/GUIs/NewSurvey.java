@@ -151,6 +151,7 @@ public class NewSurvey extends javax.swing.JFrame {
     }//GEN-LAST:event_tfTitleActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+
         ConnectionPostgres c = new ConnectionPostgres();
         int idSurvey = c.getIDLastRegister("survey");
         //Change of Window
@@ -158,8 +159,9 @@ public class NewSurvey extends javax.swing.JFrame {
         srvCre.setExtendedState(MAXIMIZED_BOTH);
         srvCre.setVisible(true);
         dispose();
+
         
-        // Insert data of a new survey to DB
+    // Insert data of a new survey to DB
         DateFormat df=new SimpleDateFormat("dd-MM-yyy");
         String FinalDate = df.format(dcFinalDate.getDate());
         String StartDate = df.format(dcStartDate.getDate());
@@ -168,8 +170,14 @@ public class NewSurvey extends javax.swing.JFrame {
         String description = tfDescription.getText();
         String objective = tfObjective.getText();
         String values = "'"+title+"','"+description+"','"+objective+"','"+StartDate+"','"+FinalDate+"'";
+
         
         c.insert("survey", "(name,description,objective,startDate,finalDate)", values);
+
+        
+
+    
+
     }//GEN-LAST:event_btnSaveActionPerformed
 
     /**

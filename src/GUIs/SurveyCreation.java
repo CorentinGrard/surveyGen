@@ -27,10 +27,9 @@ public class SurveyCreation extends javax.swing.JFrame {
         jScrollPane1.getViewport().setView(questionContainer);
     }
 
-    
-    
-    
+   
     public SurveyCreation() {
+        
         initComponents();
         
         /*Configuration of the Question Container and the Scroll Panel*/
@@ -42,6 +41,9 @@ public class SurveyCreation extends javax.swing.JFrame {
        // jScrollPane1.setViewportView(questionContainer);
         jScrollPane1.getViewport().setView(questionContainer);
     }
+    
+    
+   
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -163,6 +165,7 @@ public class SurveyCreation extends javax.swing.JFrame {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         StoringManager stMan = new StoringManager();
         stMan.saveAllQuestions(questionContainer.questions, idSurvey);
+
     }//GEN-LAST:event_btnSaveActionPerformed
   
 

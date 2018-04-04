@@ -22,7 +22,6 @@ public class Question extends javax.swing.JPanel {
 
     private int idSurvey;
     private int idQuestion;
-    private String title; 
     private String description; //Ver donde colocamos la descripción
     private int type; //1 for concurrent, 2 for alternative, 3 for free
     private ArrayList<Option> options = new ArrayList<>();
@@ -41,13 +40,14 @@ public class Question extends javax.swing.JPanel {
     
      
      /*Getters and Setters*/
-    public String getTitle(){return tfTitle.getText();}
-    
-    public void setTitle(String title){this.title = title;}
+     
+    public int getIdQuestion(){return idQuestion;}
     
     public int getidSurvey(){return idSurvey;}
     
     public void setIdSurvey(int idSvey){    this.idSurvey = idSvey;}
+
+    public ArrayList<Option> getOptions() {return options;}
     
     public String getDescription(){return description;}
     
@@ -60,6 +60,8 @@ public class Question extends javax.swing.JPanel {
     public int getId() {return idQuestion;}
 
     public void setId(int id) {this.idQuestion = id;}
+    
+    public String getTitle(){ return tfTitle.getText();}
   /////////////////////////////////////
 
     public void QuestionInit(JPanel panel){
