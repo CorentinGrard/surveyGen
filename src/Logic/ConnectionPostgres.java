@@ -21,12 +21,12 @@ public class ConnectionPostgres {
     //Create a method to establish de connection with the database
     public Connection connectDB(){
         String user = "postgres";
-        String password = "sasuke1996";
+        String password = "1234";
         Connection c = null;
         try {
             Class.forName("org.postgresql.Driver");
             c = DriverManager
-            .getConnection("jdbc:postgresql://localhost:5434/surveys",
+            .getConnection("jdbc:postgresql://localhost:5432/surveys",
             user, password);
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,20 +63,29 @@ public class ConnectionPostgres {
         }          
     }
     
-    //Esta clase queda en duda estaba pensando usarla 
-    public ResultSet returnLastRow(String tableName){
+   
+    public int getIDLastRegister(String tableName){
+        
         ResultSet result = null;
+        int id = 0;
         try{
             Connection c = connectDB();
-            Statement st = c.createStatement();
+            Statement st = c.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             String sql = "SELECT * from "+tableName;
             result = st.executeQuery(sql);
+            //result.setFetchDirection(ResultSet.FETCH_REVERSE);
             result.last();
-            
+            id = result.getInt("id"); //some the tables must have the primary key id
+            result.close();
+            st.close();
+            c.close();
+            System.out.print("Estoy en el try");
+
         } catch (Exception e){
             System.err.println(e.getClass().getName()+": "+e.getMessage());
         }
-        return result;
+        
+        return id;
     }
     
 //    public void insertOption(String valuesQuestionOption, String parameters, String descriptionNewOption){

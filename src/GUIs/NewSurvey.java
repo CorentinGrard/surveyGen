@@ -18,6 +18,9 @@ public class NewSurvey extends javax.swing.JFrame {
     /**
      * Creates new form NewSurvey
      */
+    
+    
+    
     public NewSurvey() {
         initComponents();
     }
@@ -148,8 +151,10 @@ public class NewSurvey extends javax.swing.JFrame {
     }//GEN-LAST:event_tfTitleActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        ConnectionPostgres c = new ConnectionPostgres();
+        int idSurvey = c.getIDLastRegister("survey");
         //Change of Window
-        SurveyCreation srvCre = new SurveyCreation();
+        SurveyCreation srvCre = new SurveyCreation(idSurvey+1);
         srvCre.setExtendedState(MAXIMIZED_BOTH);
         srvCre.setVisible(true);
         dispose();
@@ -163,8 +168,8 @@ public class NewSurvey extends javax.swing.JFrame {
         String description = tfDescription.getText();
         String objective = tfObjective.getText();
         String values = "'"+title+"','"+description+"','"+objective+"','"+StartDate+"','"+FinalDate+"'";
-       // ConnectionPostgres c = new ConnectionPostgres();
-       // c.insert("survey", "(name,description,objective,startDate,finalDate)", values);
+        
+        c.insert("survey", "(name,description,objective,startDate,finalDate)", values);
     }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
