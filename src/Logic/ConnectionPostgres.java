@@ -15,42 +15,42 @@ import java.sql.Statement;
  * @author zoso
  */
 public class ConnectionPostgres {
-    
-    public ConnectionPostgres(){}
-    
+
+    public ConnectionPostgres() {
+    }
+
     //Create a method to establish de connection with the database
-    public Connection connectDB(){
+    public Connection connectDB() {
         String user = "postgres";
-        String password = "sasuke1996";
+        String password = "1234";
         Connection c = null;
         try {
             Class.forName("org.postgresql.Driver");
             c = DriverManager
-            .getConnection("jdbc:postgresql://localhost:5434/surveys",
-            user, password);
+                    .getConnection("jdbc:postgresql://localhost:5432/surveys",
+                            user, password);
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        
+
         System.out.println("Opened database successfully");
         return c;
     }
-    
+
     //Method to insert any value in tables
     //Values can have different formats according with the type of table
     //survey -> (name,description,objective,startDate,finalDate)
     //question ->(id,idSurvey,title,description,type)
     //Option -> (id,description)
     //QuestionOptin -> (idSurvey,idQuestion,idOption)
-                    
-    public void insert(String tableName,String parameters,String values){
+    public void insert(String tableName, String parameters, String values) {
 
         try {
             Connection c = connectDB();
             Statement st = c.createStatement();
-            String sql = "INSERT INTO "+ tableName +" "+ parameters +" VALUES ("+values+");";
+            String sql = "INSERT INTO " + tableName + " " + parameters + " VALUES (" + values + ");";
             System.out.println(sql);
             st.executeUpdate(sql);
             st.close();
@@ -58,25 +58,37 @@ public class ConnectionPostgres {
             c.commit();
             c.close();
         } catch (Exception e) {
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
-        }          
+        }
     }
-    
+
     //Esta clase queda en duda estaba pensando usarla 
-    public ResultSet returnLastRow(String tableName){
+    public ResultSet returnLastRow(String tableName) {
         ResultSet result = null;
-        try{
+        try {
             Connection c = connectDB();
             Statement st = c.createStatement();
-            String sql = "SELECT * from "+tableName;
+            String sql = "SELECT * from " + tableName;
             result = st.executeQuery(sql);
             result.last();
-            
-        } catch (Exception e){
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return result;
+    }
+
+    public int getId(String tableName){
+        int surveyId = -1;
+        try {
+            surveyId = returnLastRow(tableName).getInt("id");
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        return surveyId;
     }
     
 //    public void insertOption(String valuesQuestionOption, String parameters, String descriptionNewOption){
@@ -105,7 +117,6 @@ public class ConnectionPostgres {
 //            System.exit(0);
 //        }       
 //    }
-    
 //    //Method to insert a new Survey
 //    public void insertSurvey(String values){
 //        Connection c;
@@ -191,5 +202,4 @@ public class ConnectionPostgres {
 //        }    
 //    }
 //    
-    
 }
