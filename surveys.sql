@@ -21,13 +21,6 @@ INSERT INTO TypeOfQuestion (type,description)VALUES
 ('Concurrent','A question which accepts multiple answer of a set of answers'),
 ('Alternative','A question which accepts a unique answer of a set of answers');
 
-            
-insert into option (description) values('Buena');
-insert into survey (description) values('Buena');
-
-select * from option 
-where description = 'Mala';
-
 ---Selects
 select * from survey;
 select * from question;

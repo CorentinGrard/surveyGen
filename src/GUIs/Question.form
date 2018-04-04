@@ -29,7 +29,7 @@
                       <Component id="btnDeleteQuest" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="jTextField1" min="-2" pref="171" max="-2" attributes="0"/>
+                      <Component id="tfTitle" min="-2" pref="171" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btnAddOption" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -53,7 +53,7 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jTextField1" min="-2" max="-2" attributes="0"/>
+                  <Component id="tfTitle" min="-2" max="-2" attributes="0"/>
                   <Component id="btnAddOption" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="22" max="32767" attributes="0"/>
@@ -72,9 +72,9 @@
         <Property name="text" type="java.lang.String" value="Title"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField1">
+    <Component class="javax.swing.JTextField" name="tfTitle">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfTitleActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnEditQuest">

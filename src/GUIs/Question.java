@@ -22,9 +22,8 @@ public class Question extends javax.swing.JPanel {
 
     private int idSurvey;
     private int idQuestion;
-    private String title; 
     private String description; //Ver donde colocamos la descripción
-    private int type; //0 for concurrent, 1 for alternative, 2 for free
+    private int type; //1 for concurrent, 2 for alternative, 3 for free
     private ArrayList<Option> options = new ArrayList<>();
     private int initialHeight;
     
@@ -35,19 +34,20 @@ public class Question extends javax.swing.JPanel {
         //Validate that type=0,1,2
         this.type = type;
         this.initComponents();
-        if (type == 2){addTextBox();}
+        if (type == 3){addTextBox();}
         
     }
     
      
      /*Getters and Setters*/
-    public String getTitle(){return title;}
-    
-    public void setTitle(String title){this.title = title;}
+     
+    public int getIdQuestion(){return idQuestion;}
     
     public int getidSurvey(){return idSurvey;}
     
     public void setIdSurvey(int idSvey){    this.idSurvey = idSvey;}
+
+    public ArrayList<Option> getOptions() {return options;}
     
     public String getDescription(){return description;}
     
@@ -60,6 +60,8 @@ public class Question extends javax.swing.JPanel {
     public int getId() {return idQuestion;}
 
     public void setId(int id) {this.idQuestion = id;}
+    
+    public String getTitle(){ return tfTitle.getText();}
   /////////////////////////////////////
 
     public void QuestionInit(JPanel panel){
@@ -97,7 +99,7 @@ public class Question extends javax.swing.JPanel {
 
         lbNumQuest = new javax.swing.JLabel();
         lbTitleQuest = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        tfTitle = new javax.swing.JTextField();
         btnEditQuest = new javax.swing.JButton();
         btnDeleteQuest = new javax.swing.JButton();
         cbMandatory = new javax.swing.JCheckBox();
@@ -107,9 +109,9 @@ public class Question extends javax.swing.JPanel {
 
         lbTitleQuest.setText("Title");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        tfTitle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                tfTitleActionPerformed(evt);
             }
         });
 
@@ -147,7 +149,7 @@ public class Question extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDeleteQuest))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAddOption)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -166,7 +168,7 @@ public class Question extends javax.swing.JPanel {
                     .addComponent(cbMandatory))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAddOption))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
@@ -238,17 +240,17 @@ public class Question extends javax.swing.JPanel {
         this.repaint();
     }
     
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void tfTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfTitleActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_tfTitleActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddOption;
     private javax.swing.JButton btnDeleteQuest;
     private javax.swing.JButton btnEditQuest;
     private javax.swing.JCheckBox cbMandatory;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbNumQuest;
     private javax.swing.JLabel lbTitleQuest;
+    private javax.swing.JTextField tfTitle;
     // End of variables declaration//GEN-END:variables
 }

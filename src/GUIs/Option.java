@@ -43,14 +43,14 @@ public class Option extends javax.swing.JPanel {
          
         Rectangle r = new Rectangle(0, 0, 100, 25);
         
-        if(type==0){
+        if(type==1){
             //It is neccessary to remove all components in order to have an updated CheckBox
             this.removeAll();
             initComponents();
             JCheckBox cbOption = new JCheckBox("Option "+String.valueOf(this.idOption+1));
             cbOption.setBounds(r);
             this.add(cbOption);
-        }else if(type==1){
+        }else if(type==2){
             //It is neccessary to remove all components in order to have an updated RadioButton
 
             this.removeAll();

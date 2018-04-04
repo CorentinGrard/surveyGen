@@ -1,5 +1,6 @@
 package GUIs;
 
+import Logic.StoringManager;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,11 +8,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 public class SurveyCreation extends javax.swing.JFrame {
-
+    int idSurvey;
     QuestionContainer questionContainer = new QuestionContainer(); //panel on which questions will live
     JScrollPane scrollPane = new JScrollPane(); //useful to make scrolling when adding a lot of questions
-            
-    public SurveyCreation() {
+ 
+    
+       public SurveyCreation(int idSurvey) {
+        this.idSurvey = idSurvey;
         initComponents();
         
         /*Configuration of the Question Container and the Scroll Panel*/
@@ -23,6 +26,24 @@ public class SurveyCreation extends javax.swing.JFrame {
        // jScrollPane1.setViewportView(questionContainer);
         jScrollPane1.getViewport().setView(questionContainer);
     }
+
+   
+    public SurveyCreation() {
+        
+        initComponents();
+        
+        /*Configuration of the Question Container and the Scroll Panel*/
+        questionContainer.setBounds(0,10,700,90);
+        questionContainer.setVisible(true);
+        questionContainer.setPreferredSize(new Dimension(700, 0));
+        this.add(questionContainer);
+        
+       // jScrollPane1.setViewportView(questionContainer);
+        jScrollPane1.getViewport().setView(questionContainer);
+    }
+    
+    
+   
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -62,6 +83,11 @@ public class SurveyCreation extends javax.swing.JFrame {
         });
 
         btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -124,17 +150,23 @@ public class SurveyCreation extends javax.swing.JFrame {
 
     /*Action on Alternative Question Button*/
     private void btnAlternativeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlternativeActionPerformed
-       questionContainer.addQuestion(1); //just call to the method in the child component
+       questionContainer.addQuestion(2); //just call to the method in the child component
     }//GEN-LAST:event_btnAlternativeActionPerformed
 
    /*Action on Concurrent Question Button*/
     private void btnConcurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConcurrentActionPerformed
-        questionContainer.addQuestion(0); //just call to the method in the child component
+        questionContainer.addQuestion(1); //just call to the method in the child component
     }//GEN-LAST:event_btnConcurrentActionPerformed
 
     private void btnFreeAnswerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFreeAnswerActionPerformed
-        questionContainer.addQuestion(2);
+        questionContainer.addQuestion(3);
     }//GEN-LAST:event_btnFreeAnswerActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        StoringManager stMan = new StoringManager();
+        stMan.saveAllQuestions(questionContainer.questions, idSurvey);
+
+    }//GEN-LAST:event_btnSaveActionPerformed
   
 
 
