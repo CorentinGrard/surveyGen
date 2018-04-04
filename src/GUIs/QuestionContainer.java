@@ -35,11 +35,11 @@ public class QuestionContainer extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     /*Method to addQuestions in the Container*/
-    public void addQuestion(){
-            Question newQuestion = new Question();
-            newQuestion.setId(cont);
+    public void addQuestion(int type){
+            Question newQuestion = new Question(type);
+            newQuestion.setId(cont++);
             questions.add(newQuestion);
-            newQuestion.QuestionInit(this, cont++);
+            newQuestion.QuestionInit(this);
     }
 
     /*Method to deleteQuestions from the Container*/
@@ -51,16 +51,6 @@ public class QuestionContainer extends javax.swing.JPanel {
         addAllQuestions();
     }
 
-    public void updateQuestionsIndexes(){
-        cont = 0;
-        for (Iterator<Question> iterator = this.questions.iterator(); iterator.hasNext();) {
-            Question question = iterator.next();
-            question.setId(cont);
-            questions.add(cont++, question);
-        }
-        
-    }
-    
     public void addAllQuestions(){
     
         cont = 0;
@@ -75,8 +65,8 @@ public class QuestionContainer extends javax.swing.JPanel {
 
         for (Iterator<Question> iterator = this.questions.iterator(); iterator.hasNext();) {
             Question question = iterator.next();
-            question.setId(cont);
-            question.QuestionInit(this, cont++);
+            question.setId(cont++);
+            question.QuestionInit(this);
         }
     }
       

@@ -9,8 +9,10 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.text.AbstractDocument;
 import GUIs.Question;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.JTextField;
 
 /**
  *
@@ -22,62 +24,53 @@ public class Question extends javax.swing.JPanel {
     private int idQuestion;
     private String title; 
     private String description; //Ver donde colocamos la descripción
-    private int tipo;
+    private int type; //0 for concurrent, 1 for alternative, 2 for free
+    private ArrayList<Option> options = new ArrayList<>();
+    private int initialHeight;
     
     private int contOpt = 0;
-
-    public String getTitle(){
-        return title;
-    }
     
-    public void setTitle(String title){
-        this.title = title;
-    }
-    
-    public int getidSurvey(){
-        return idSurvey;
-    }
-    
-    public void setIdSurvey(int idSvey){
-        this.idSurvey = idSvey;
-    }
-    
-    public String getDescription(){
-        return description;
-    }
-    
-    public void setDescription(String descript){
-        this.description = descript;
-    }
-    public int getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
-    }
-
-    
-    public int getId() {
-        return idQuestion;
-    }
-
-    public void setId(int id) {
-        this.idQuestion = id;
-    }
-  
-    public Question() {
+    /*Constructor*/
+     public Question(int type) {
+        //Validate that type=0,1,2
+        this.type = type;
         this.initComponents();
+        if (type == 2){addTextBox();}
+        
     }
     
-    public void QuestionInit(JPanel panel, int cont){
+     
+     /*Getters and Setters*/
+    public String getTitle(){return title;}
+    
+    public void setTitle(String title){this.title = title;}
+    
+    public int getidSurvey(){return idSurvey;}
+    
+    public void setIdSurvey(int idSvey){    this.idSurvey = idSvey;}
+    
+    public String getDescription(){return description;}
+    
+    public void setDescription(String descript){this.description = descript;}
+    
+    public int getType() {return type;}
+
+    public void setType(int type) {this.type = type;}
+    
+    public int getId() {return idQuestion;}
+
+    public void setId(int id) {this.idQuestion = id;}
+  /////////////////////////////////////
+
+    public void QuestionInit(JPanel panel){
         
         this.lbNumQuest.setText(String.valueOf(idQuestion+1));
 
        
         /*Calculo del size de la pregunta*/
-        Dimension questionDim = this.getPreferredSize();
+        Dimension questionDim = this.getPreferredSize(); 
         int questionHeigth = (int) questionDim.height;
+        initialHeight = questionHeigth;
         int questionWidth = (int) questionDim.width;
         
         
@@ -87,24 +80,17 @@ public class Question extends javax.swing.JPanel {
         int panelWidth = (int) panelDim.width;
 
         /*Posicionamiento de la pregunta*/
-//        this.setBounds(0,questionHeigth*cont,questionWidth,questionHeigth);
         this.setBounds(0,panelHeigth,questionWidth,questionHeigth);
-        
         
         /*Update of the container*/
         panel.setPreferredSize(new Dimension(panelWidth,panelHeigth+questionHeigth));
              
-        
         panel.add(this);
         panel.revalidate();
-        panel.repaint();
-//        panel.updateUI();
-        
+        panel.repaint();   
     }
 
-    
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -119,7 +105,7 @@ public class Question extends javax.swing.JPanel {
 
         lbNumQuest.setText("1.");
 
-        lbTitleQuest.setText("Título:");
+        lbTitleQuest.setText("Title");
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,7 +152,7 @@ public class Question extends javax.swing.JPanel {
                         .addComponent(btnAddOption)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cbMandatory)
-                .addContainerGap(227, Short.MAX_VALUE))
+                .addContainerGap(241, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,24 +179,68 @@ public class Question extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDeleteQuestActionPerformed
 
     private void btnAddOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOptionActionPerformed
-        Dimension questionDim = this.getPreferredSize();
         Option newOption = new Option();
-        newOption.setBounds(20, questionDim.height, 450, 25);
-        
-        this.setPreferredSize(new Dimension(questionDim.width,questionDim.height+25));
-        this.add(newOption);
-        this.updateUI();
-        
-        QuestionContainer questionContainer = (QuestionContainer)this.getParent();
+        newOption.setType(this.getType());
+        newOption.setIdOption(contOpt++);
+        options.add(newOption);
+        newOption.OptionInit(this);
+        QuestionContainer questionContainer = (QuestionContainer) this.getParent();
         questionContainer.updateQuestion(this,idQuestion);
-        
     }//GEN-LAST:event_btnAddOptionActionPerformed
 
+     /*Method to deleteOptions from the Container*/
+    public void deleteOption(int id){
+        Dimension panelDim = this.getPreferredSize();
+        int panelWidth = (int) panelDim.width;
+        this.setPreferredSize(new Dimension(panelWidth,this.initialHeight));    
+        options.remove(id);
+        addAllOptions();
+    }
+
+    public void addAllOptions(){
+    
+        contOpt = 0;
+        Dimension thisDim = this.getPreferredSize();
+        this.setPreferredSize(new Dimension(thisDim.width,90));
+        this.removeAllOptions();
+        
+        for (Iterator<Option> iterator = this.options.iterator(); iterator.hasNext();) {
+            Option option = iterator.next();
+            option.setIdOption(contOpt++);
+            option.OptionInit(this);
+        }
+        
+        
+    }
+    
+    public void removeAllOptions(){
+        Component[] components = this.getComponents();
+        for(Component c : components){
+        //Find the components you want to remove
+            if(c instanceof Option){
+                //Remove it
+                this.remove(c);
+            }
+        }
+        //IMPORTANT
+        this.revalidate();
+        this.repaint();
+    }
+    
+    /*Just in case it is Free Answer Question*/
+    public void addTextBox(){
+        Dimension thisDim = this.getPreferredSize();
+        JTextField tfAnswer = new JTextField();
+        tfAnswer.setBounds(30, thisDim.height, 250, 250);
+        this.setPreferredSize(new Dimension(thisDim.width,thisDim.height+250));
+        this.add(tfAnswer);
+        this.revalidate();
+        this.repaint();
+    }
+    
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
-
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddOption;
