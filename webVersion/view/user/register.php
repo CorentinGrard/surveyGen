@@ -1,19 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title>SB Admin - Start Bootstrap Template</title>
-  <!-- Bootstrap core CSS-->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom fonts for this template-->
-  <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <!-- Custom styles for this template-->
-  <link href="css/sb-admin.css" rel="stylesheet">
+<?php
+require(File::build_path(array("view","head.php")));
+?>
 </head>
 
 <body class="bg-dark">
@@ -21,49 +8,67 @@
     <div class="card card-register mx-auto mt-5">
       <div class="card-header">Register an Account</div>
       <div class="card-body">
-        <form>
+        <form id="register" method=<?php echo $postOrGet?> action="index.php">
+        <input type='hidden' name='controller' value='user'>
+        <input type='hidden' name='action' value='created'>
           <div class="form-group">
             <div class="form-row">
               <div class="col-md-6">
-                <label for="exampleInputName">First name</label>
-                <input class="form-control" id="exampleInputName" type="text" aria-describedby="nameHelp" placeholder="Enter first name">
+                <label for="fName_id">First name</label>
+                <input class="form-control" id="fName_id" type="text" aria-describedby="nameHelp" placeholder="Enter first name" name="fName">
               </div>
               <div class="col-md-6">
-                <label for="exampleInputLastName">Last name</label>
-                <input class="form-control" id="exampleInputLastName" type="text" aria-describedby="nameHelp" placeholder="Enter last name">
+                <label for="lName_id">Last name</label>
+                <input class="form-control" id="lName_id" type="text" aria-describedby="nameHelp" placeholder="Enter last name" name="lName">
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input class="form-control" id="exampleInputEmail1" type="email" aria-describedby="emailHelp" placeholder="Enter email">
+            <label for="email_id">Email address</label>
+            <input class="form-control" id="email_id" type="email" aria-describedby="emailHelp" placeholder="Enter email" name="email">
+            <div id="confEmail"></div>
+          </div>
+          <div class="form-group">
+            <label for="bd_id">Birthdate</label>
+            <input class="form-control col-md-4" id="bd_id" type="date" name="birthdate" aria-describedby="datelHelp" min="1900-01-01" max=<?php echo $today; ?> >
+          </div>
+          <div class="form-group">
+            <label for="profession_id">Profession</label>
+            <select id="profession_id" class="form-control col-md-6" name="profession">
+              <?php
+                foreach($professionTab as $profession){?>
+                  <option value="<?php echo $profession->get('id');?> "><?php echo $profession->get('description'); ?> </option>
+                <?php } ?>
+            </select>
           </div>
           <div class="form-group">
             <div class="form-row">
               <div class="col-md-6">
-                <label for="exampleInputPassword1">Password</label>
-                <input class="form-control" id="exampleInputPassword1" type="password" placeholder="Password">
+                <label for="password_id">Password</label>
+                <input class="form-control" id="password_id" type="password" placeholder="Password" name="password">
               </div>
               <div class="col-md-6">
-                <label for="exampleConfirmPassword">Confirm password</label>
-                <input class="form-control" id="exampleConfirmPassword" type="password" placeholder="Confirm password">
+                <label for="confPassword_id">Confirm password</label>
+                <input class="form-control" id="confPassword_id" type="password" placeholder="Confirm password" name="confPassword">
               </div>
             </div>
           </div>
-          <a class="btn btn-primary btn-block" href="login.html">Register</a>
+          <input class="btn btn-primary btn-block" type="submit" value="Register">
         </form>
         <div class="text-center">
-          <a class="d-block small mt-3" href="login.html">Login Page</a>
-          <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
+          <a class="d-block small mt-3" href="index.php">Login page</a>
         </div>
       </div>
     </div>
   </div>
   <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="./vendor/jquery/jquery.min.js"></script>
+  <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="./vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Custom scripts for all pages-->
+  <script src="./js/sb-admin.min.js"></script>
+  <script src="./js/jquery.validate.min.js"></script>
+  <script src="./js/register.js"></script>
 </body>
-
 </html>

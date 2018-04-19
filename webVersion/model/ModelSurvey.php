@@ -4,8 +4,6 @@ class ModelSurvey extends Model{
   private $id;
   private $idProject;
   private $name;
-  private $nonce
-  private $password
   private $description;
   private $objective;
   private $startDate;

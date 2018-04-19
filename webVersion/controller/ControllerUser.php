@@ -1,6 +1,7 @@
 <?php
 require_once (File::build_path(array ("model","Model.php")));
 require_once (File::build_path(array ("model","ModelUser.php")));
+require_once (File::build_path(array ("model","ModelProfession.php")));
 require_once (File::build_path(array ("lib","Util.php")));
 require_once (File::build_path(array ("lib","Security.php")));
 class ControllerUser {
@@ -77,35 +78,39 @@ class ControllerUser {
     }
 
   	public static function create(){
-			$postOrGet=Conf::getPostOrGet();
-    		require(File::build_path(array ("view",static::$object,"register.php")));
+		$today = date('Y-m-d');
+		$postOrGet=Conf::getPostOrGet();
+		$professionTab=ModelProfession::selectAll();
+    	require(File::build_path(array ("view",static::$object,"register.php")));
     }
 
     public static function created(){
-    		$email=Util::myGet('email');
-				if(filter_var(Util::myGet('email'),FILTER_VALIDATE_EMAIL)==false){
-					$view = array("view", static::$object, "errorEmail.php");
-					$pagetitle = 'Erreur Email';
-					require(File::build_path(array ("view","view.php")));
-				}
-        	if(Util::myGet('pass')!=Util::myGet('confpass')){
-				$view = array("view", static::$object, "connect.php"); /*errorpass.php*/
+			$email=Util::myGet('email');
+			if(filter_var(Util::myGet('email'),FILTER_VALIDATE_EMAIL)==false){
+				$view = array("view", static::$object, "errorEmail.php");
+				$pagetitle = 'Erreur Email';
+				require(File::build_path(array ("view","view.php")));
+			}
+        	if(Util::myGet('password')!=Util::myGet('confPassword')){
+				$view = array("view", static::$object, "connect.php");
 	        	$pagetitle = 'Erreur mot de passe';
 	      		require(File::build_path(array ("view","view.php")));
         	}else{
 				$nonce=Security::generateRandomHex();
 		    	if(ModelUser::save(array(
-		            "email"=>$email,
-		            "pass"=>Security::chiffrer(Util::myGet('pass')),
-					"pseudo"=>Util::myGet('pseudo'),
-		            "email"=>Util::myGet('email'),
+					"email"=>$email,
+					"idProfession" => Util::myGet('profession'),
+					"name" => Util::myGet("fName"),
+					"lastName" => Util::myGet("lName"),
+		            "password"=>Security::encode(Util::myGet('password')),
+					"birthDate"=>Util::myGet('birthdate'),
 					"nonce"=>$nonce,
 		       ))==false){
 					$tab_u = ModelUser::selectAll();
 					$postOrGet=Conf::getPostOrGet();
-		        $view=array("view", static::$object, "errorSave.php");
-		        $pagetitle='Inscription';
-		    	require(File::build_path(array ("view","view.php")));
+		       		$view=array("view", static::$object, "errorSave.php");
+		       		$pagetitle='Inscription';
+		    		require(File::build_path(array ("view","view.php")));
 		    	}else{
 					$mail='Click on the link to validate your account : http://sgs/webVersion/?controller=user&action=validate&email='.$email.'&nonce='.$nonce.'"';
 					if(mail(Util::myGet('email'),"Activation SGS account",$mail)){
@@ -115,7 +120,7 @@ class ControllerUser {
 			        	require(File::build_path(array ("view","view.php")));
 					}else{
 						$view = array("view", static::$object, "errorSendEmail.php");
-						$pagetitle = 'Erreur envoi email';
+						$pagetitle = 'Error sending email';
 						require(File::build_path(array ("view","view.php")));
 					}
 		  		}
@@ -217,6 +222,13 @@ class ControllerUser {
 	
 	public static function forgotPassword(){
 		require(File::build_path(array ("view",static::$object,"forgot-password.php")));
+	}
+
+	public static function existUser(){
+		if(Util::myGet('email'!=NULL)){
+			$u=ModelUser::select(Util::myGet('email'));
+			echo $u!=false;
+		}
 	}
 }
 ?>

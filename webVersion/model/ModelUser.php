@@ -8,8 +8,8 @@ class ModelUser extends Model{
   private $birthD;
   private $nonce;
 
-  static protected $object ='Utilisateur';
-  protected static $primary='login';
+  static protected $object ='User';
+  protected static $primary='email';
 
   public static function checkPassword($email,$password){
     $u=ModelUser::select($email);
@@ -18,30 +18,6 @@ class ModelUser extends Model{
     }else{
       return false;
     }
-  }
-
-  public static function getNameByLogin($login){
-    $table_name=static::$object;
-    $primary_key=static::$primary;
-    $sql = "SELECT name from $table_name WHERE $primary_key=:primary_v";
-    $req_prep = Model::$pdo->prepare($sql);
-    $values = array(
-        "primary_v" => $login,
-    );
-    try{
-      $req_prep->execute($values);
-    } catch (PDOException $e) {
-      if (Conf::getDebug()) {
-        echo $e->getMessage();
-        } else {
-          echo 'Une erreur est survenue <a href=""> retour a la page d\'accueil </a>';
-        }
-        die();
-    }
-    $tab = $req_prep->fetchAll(PDO::FETCH_ASSOC);
-    if (empty($tab))
-        return false;
-    return $tab[0]['name'];
   }
 
   //getter
