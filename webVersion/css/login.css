@@ -1,0 +1,26 @@
+body {
+    margin:0;
+    background-image: url("../img/background.jpg");
+    background-color: #FFFFFF;
+    background-size: cover;
+    font-family:'Open Sans', 'Helvetica Neue', sans-serif, "Arial Black";
+}
+
+.sideBar {
+    text-align: center;
+    width: 27%;
+    height: 100%;
+    background-color: #FFFFFF;
+    right: 0;
+    position: absolute;
+    color: #576271;
+}
+.logo{
+    margin-top: 40px;
+    width: 30%;
+}
+
+.title{
+    font-size: 26px;
+    margin-bottom: 30%;
+}
