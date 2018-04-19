@@ -11,9 +11,9 @@ class ModelUser extends Model{
   static protected $object ='Utilisateur';
   protected static $primary='login';
 
-  public static function checkPassword($login,$mot_de_passe_chiffre){
-    $u=ModelUser::select($login);
-    if(!$u==false && $u->get('login')==$login && $u->get('pass')==$mot_de_passe_chiffre){
+  public static function checkPassword($email,$password){
+    $u=ModelUser::select($email);
+    if(!$u==false && $u->get('email')==$login && $u->get('password')==$password){
       return true;
     }else{
       return false;
