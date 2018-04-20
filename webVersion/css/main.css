@@ -1,0 +1,5 @@
+.backgroundPhoto{
+    background-image: url("../img/background.jpg") !important;
+    background-color: rgb(175, 175, 175);
+    background-size: cover;
+}

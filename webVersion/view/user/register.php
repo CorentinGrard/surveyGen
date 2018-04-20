@@ -3,7 +3,7 @@ require(File::build_path(array("view","head.php")));
 ?>
 </head>
 
-<body class="bg-dark">
+<body class="backgroundPhoto">
   <div class="container">
     <div class="card card-register mx-auto mt-5">
       <div class="card-header">Register an Account</div>

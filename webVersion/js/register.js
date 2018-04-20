@@ -24,13 +24,13 @@ messages:{
 
 });
 
-$("#email_id").keypress(function(){
+$("#email_id").keyup(function(){
     $.ajax({
         url: "index.php?controller=user&action=existUser&email="+this.value,
         success: function(result){
-            if(result==true){
+            if(result){
                 $("#email_id").css("border-color", "red")
-                $("#confEmail").html("Email already exist")
+                $("#confEmail").html("Email already exists  ")
             }else{
                 $("#email_id").css("border-color", "green")
                 $("#confEmail").html("")

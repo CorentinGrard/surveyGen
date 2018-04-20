@@ -16,3 +16,5 @@
   <link href="./css/sb-admin.css" rel="stylesheet">
   <!-- Favicon-->
   <link rel="icon" href="./img/favicon.ico" />
+  <!-- Css -->
+  <link href="./css/main.css" rel="stylesheet">

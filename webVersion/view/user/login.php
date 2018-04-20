@@ -3,7 +3,7 @@ require(File::build_path(array("view","head.php")));
 ?>
     <link rel="stylesheet" type="text/css" media="screen" href="./css/login.css" />
 </head>
-<body>
+<body class="backgroundPhoto">
     <div class="sideBar">
         <img src="./img/logo.png" alt="Logo SGS" class="logo">
         <div class="title">Survey Generator System</div>

@@ -1,6 +1,6 @@
 <?php
 require_once (File::build_path(array ("model","Model.php")));
-require_once (File::build_path(array ("model","ModelUser.php")));
+require_once (File::build_path(array ("model","ModelUsers.php")));
 require_once (File::build_path(array ("model","ModelProfession.php")));
 require_once (File::build_path(array ("lib","Util.php")));
 require_once (File::build_path(array ("lib","Security.php")));
@@ -11,19 +11,18 @@ class ControllerUser {
 	public static function default(){
         if(isset($_SESSION['email'])){
             ControllerDashboard::default();
-        }
-        $postOrGet=Conf::getPostOrGet();
-        require (File::build_path(array ("view",static::$object,"login.php")));
+        }else{
+      		 $postOrGet=Conf::getPostOrGet();
+			require (File::build_path(array ("view",static::$object,"login.php")));
+		}
     }
 
     public static function connected(){
-	    if(Util::myGet('email')!='' && Util::myGet('password')!='' && ModelUser::checkPassword(Util::myGet('email'),Security::encode(Util::myGet('password')))){
-			$u=ModelUser::select(Util::myGet('email'));
+	    if(Util::myGet('email')!='' && Util::myGet('password')!='' && ModelUsers::checkPassword(Util::myGet('email'),Security::encode(Util::myGet('password')))){
+			$u=ModelUsers::select(Util::myGet('email'));
 			if($u->get('nonce')==NULL){
 			    $_SESSION['email'] = Util::myGet('email');
-		   		$view=array("view", static::$object, "connected.php");
-		        $pagetitle='Connexion réussie';
-		      	require (File::build_path(array ("view","view.php")));
+				header("location:index.php");
 			}else{
 				$view=array("view", static::$object, "errorNonce.php");
 				$pagetitle='Email non validé';
@@ -42,9 +41,9 @@ class ControllerUser {
     }
 
 	public static function validate(){
-		$u=ModelUser::select(Util::myGet('email'));
+		$u=ModelUsers::select(Util::myGet('email'));
 		if($u!=false && $u->get('nonce')==Util::myGet('nonce')){
-			if(ModelUser::update(array(
+			if(ModelUsers::update(array(
 				"email" => Util::myGet('email'),
 				"nonce" => NULL,
 			))){
@@ -65,7 +64,7 @@ class ControllerUser {
 
     public static function read() {
         $email = $_GET['email'];
-        $u = ModelUser::select($email);
+        $u = ModelUsers::select($email);
         if($u==false){
             $view=array("view", static::$object, "errorUser.php");
             $pagetitle='User non trouvé';
@@ -78,10 +77,14 @@ class ControllerUser {
     }
 
   	public static function create(){
-		$today = date('Y-m-d');
-		$postOrGet=Conf::getPostOrGet();
-		$professionTab=ModelProfession::selectAll();
-    	require(File::build_path(array ("view",static::$object,"register.php")));
+		if(isset($_SESSION['email'])){
+			header('location:index.php');
+		}else{
+			$today = date('Y-m-d');
+			$postOrGet=Conf::getPostOrGet();
+			$professionTab=ModelProfession::selectAll();
+			require(File::build_path(array ("view",static::$object,"register.php")));
+		}
     }
 
     public static function created(){
@@ -97,7 +100,7 @@ class ControllerUser {
 	      		require(File::build_path(array ("view","view.php")));
         	}else{
 				$nonce=Security::generateRandomHex();
-		    	if(ModelUser::save(array(
+		    	if(ModelUsers::save(array(
 					"email"=>$email,
 					"idProfession" => Util::myGet('profession'),
 					"name" => Util::myGet("fName"),
@@ -106,18 +109,18 @@ class ControllerUser {
 					"birthDate"=>Util::myGet('birthdate'),
 					"nonce"=>$nonce,
 		       ))==false){
-					$tab_u = ModelUser::selectAll();
+					$tab_u = ModelUsers::selectAll();
 					$postOrGet=Conf::getPostOrGet();
 		       		$view=array("view", static::$object, "errorSave.php");
 		       		$pagetitle='Inscription';
 		    		require(File::build_path(array ("view","view.php")));
 		    	}else{
+					$headers = 'MIME-Version: 1.0’ . "\r\n"';
+					$headers .= 'Content-type: text/html; charset=iso-8859-1′ . "\r\n"';
+					$headers .= 'From: sgs@corentin-grard.fr’ . "\r\n"';
 					$mail='Click on the link to validate your account : http://sgs/webVersion/?controller=user&action=validate&email='.$email.'&nonce='.$nonce.'"';
-					if(mail(Util::myGet('email'),"Activation SGS account",$mail)){
-						$tab_u = ModelUser::selectAll();
-			       		$view = array("view", static::$object, "created.php");
-						$pagetitle = 'User créé';
-			        	require(File::build_path(array ("view","view.php")));
+					if(mail(Util::myGet('email'),"Activation SGS account",$mail,$headers)){
+						header("location:index.php");
 					}else{
 						$view = array("view", static::$object, "errorSendEmail.php");
 						$pagetitle = 'Error sending email';
@@ -136,7 +139,7 @@ class ControllerUser {
 	    	header('Location:index.php');
 	    }else{
 	        $email=Util::myGet('email');
-	        $User = ModelUser::select($email);
+	        $User = ModelUsers::select($email);
 	        if($User==false){
 	            $view=array("view", static::$object, "errorUser.php");
 	            $pagetitle='User non trouvé';
@@ -163,8 +166,8 @@ class ControllerUser {
 						require(File::build_path(array ("view","view.php")));
 					}
 					$email=Util::myGet('email');
-	        if(ModelUser::select($email)){
-	            $res=ModelUser::update(array(
+	        if(ModelUsers::select($email)){
+	            $res=ModelUsers::update(array(
 								"email"=>$email,
 								"pass"=>Security::chiffrer(Util::myGet('pass')),
 								"pseudo"=>Util::myGet('pseudo'),
@@ -174,7 +177,7 @@ class ControllerUser {
 	                ));
 	            if($res){
 									$email = $_GET['email'];
-									$u = ModelUser::select($email);
+									$u = ModelUsers::select($email);
 									$email=htmlspecialchars($email);
 									$urlemail=rawurlencode($u->get('email'));
 									$up = "";
@@ -200,33 +203,52 @@ class ControllerUser {
     public static function delete(){
     	if(!isset($_SESSION['email'])){
     		$view=array("view", static::$object, "connect.php");
-	      $pagetitle='Connexion';
-	      require(File::build_path(array ("view","view.php")));
+	    	$pagetitle='Connexion';
+	      	require(File::build_path(array ("view","view.php")));
 	    }else if(!Session::is_user(Util::myGet('email'))){
 	    	header('Location:index.php');
 	    }else{
 	    	$email = Util::myGet('email');
-	    	if (ModelUser::delete($email)) {
-					if(Session::is_user($email))self::disconnect();
-	        $tab_u = ModelUser::selectAll();
-	        $view = array("view", static::$object, "deleted.php");
-	        $pagetitle = 'User supprimé';
-	        require(File::build_path(array ("view","view.php")));
+	    	if (ModelUsers::delete($email)) {
+				if(Session::is_user($email))self::disconnect();
+				$tab_u = ModelUsers::selectAll();
+				$view = array("view", static::$object, "deleted.php");
+				$pagetitle = 'User supprimé';
+				require(File::build_path(array ("view","view.php")));
 	    	}else{
-	        $view=array("view", static::$object, "erreurDelete.php");
-	        $pagetitle='Erreur suppression';
+	        	$view=array("view", static::$object, "erreurDelete.php");
+	        	$pagetitle='Erreur suppression';
 	    		require(File::build_path(array ("view","view.php")));
 	    	}
 	    }
 	}
 	
 	public static function forgotPassword(){
-		require(File::build_path(array ("view",static::$object,"forgot-password.php")));
+		if(isset($_SESSION['email'])){
+			header("location:index.php");
+		}else{
+			$postOrGet=Conf::getPostOrGet();
+			require(File::build_path(array ("view",static::$object,"forgot-password.php")));
+		}
+	}
+
+	public static function resetPassword(){
+		$headers = 'MIME-Version: 1.0’ . "\r\n"';
+		$headers .= 'Content-type: text/html; charset=iso-8859-1′ . "\r\n"';
+		$headers .= 'From: sgs@corentin-grard.fr’ . "\r\n"';
+		$mail='Click on the link to reset your password http://sgs/webVersion/?controller=user&action=validate&email='.$email.'&nonce='.$nonce.'"';
+		if(mail(Util::myGet('email'),"Reset SGS password",$mail,$headers)){
+			header("location:index.php");
+		}else{
+			$view = array("view", static::$object, "errorSendEmail.php");
+			$pagetitle = 'Error sending email';
+			require(File::build_path(array ("view","view.php")));
+		}
 	}
 
 	public static function existUser(){
-		if(Util::myGet('email'!=NULL)){
-			$u=ModelUser::select(Util::myGet('email'));
+		if(Util::myGet('email')!=NULL){
+			$u=ModelUsers::select(Util::myGet('email'));
 			echo $u!=false;
 		}
 	}
