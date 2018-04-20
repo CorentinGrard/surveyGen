@@ -1,9 +1,10 @@
 <?php
 require_once (File::build_path(array ("controller","ControllerUser.php")));
-require_once (File::build_path(array ("controller","ControllerLogin.php")));
+require_once (File::build_path(array ("controller","ControllerProject.php")));
+require_once (File::build_path(array ("controller","ControllerDashboard.php")));
 require_once (File::build_path(array ("controller","Controller.php")));
 
-$controller_default="login";
+$controller_default="user";
 if(!is_null(Util::myGet('controller'))){
 	$controller_class = 'Controller'.ucfirst(Util::myGet('controller'));
 }else{

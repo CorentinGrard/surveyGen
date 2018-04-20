@@ -1,8 +1,5 @@
 body {
     margin:0;
-    background-image: url("../img/background.jpg");
-    background-color: #FFFFFF;
-    background-size: cover;
     font-family:'Open Sans', 'Helvetica Neue', sans-serif, "Arial Black";
 }
 
@@ -23,4 +20,9 @@ body {
 .title{
     font-size: 26px;
     margin-bottom: 30%;
+}
+
+.log{
+    width: 70%;
+    margin: auto;
 }
