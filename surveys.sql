@@ -16,7 +16,7 @@ DROP TABLE IF EXISTS Question CASCADE;
 DROP TABLE IF EXISTS QuestionOption CASCADE;
 DROP TABLE IF EXISTS Constraints CASCADE;
 CREATE TABLE Survey (id SERIAL NOT NULL, Projectid int4 NOT NULL, name varchar(255) NOT NULL, description text, objective varchar(255), startDate date NOT NULL, finalDate date NOT NULL, DBname varchar(30) NOT NULL, PRIMARY KEY (id));
-CREATE TABLE Project (id SERIAL NOT NULL, description text NOT NULL, Useremail varchar(50), PRIMARY KEY (id));
+CREATE TABLE Project (id SERIAL NOT NULL, description text NOT NULL, Useremail varchar(50) NOT NULL, name varchar(20), PRIMARY KEY (id));
 CREATE TABLE Users (email varchar(50) NOT NULL, idProfession int4 NOT NULL, name varchar(30) NOT NULL, lastName varchar(30) NOT NULL, password varchar(64) NOT NULL, birthDate date NOT NULL, nonce varchar(32), PRIMARY KEY (email));
 CREATE TABLE Profession (id SERIAL NOT NULL, description varchar(100) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Options (id SERIAL NOT NULL, description varchar(255) NOT NULL, PRIMARY KEY (id));
@@ -32,7 +32,6 @@ ALTER TABLE QuestionOption ADD CONSTRAINT FKQuestionOp817468 FOREIGN KEY (idQues
 ALTER TABLE QuestionOption ADD CONSTRAINT FKQuestionOp299459 FOREIGN KEY (idOption) REFERENCES Options (id);
 ALTER TABLE Question ADD CONSTRAINT FKQuestion893077 FOREIGN KEY (idSurvey) REFERENCES Survey (id);
 ALTER TABLE Constraints ADD CONSTRAINT FKConstraint444998 FOREIGN KEY (idQuestion, idSurvey) REFERENCES Question (id, idSurvey);
-
 
 
 

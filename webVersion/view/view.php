@@ -25,10 +25,10 @@ require(File::build_path(array("view","head.php")));
 					</a>
 					<ul class="sidenav-second-level collapse" id="collapseExamplePages">
 						<li>
-							<a href="login.html">Create a new project</a>
+							<a href="?controller=project&action=create">Create a new project</a>
 						</li>
 						<li>
-							<a href="register.html">My projects</a>
+							<a href="?controller=project&action=readAll">My projects</a>
 						</li>
 					</ul>
 				</li>
