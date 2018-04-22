@@ -39,7 +39,7 @@ require(File::build_path(array("view","head.php")));
 					</a>
 					<ul class="sidenav-second-level collapse" id="collapseMulti">
 						<li>
-							<a href="#">Create a survey</a>
+							<a href="?controller=survey&action=create">Create a survey</a>
 						</li>
 						<li>
 							<a href="#">My surveys</a>

@@ -12,7 +12,7 @@ class ControllerUser {
         if(isset($_SESSION['email'])){
             ControllerDashboard::default();
         }else{
-      		 $postOrGet=Conf::getPostOrGet();
+      		$postOrGet=Conf::getPostOrGet();
 			require (File::build_path(array ("view",static::$object,"login.php")));
 		}
     }
@@ -24,15 +24,15 @@ class ControllerUser {
 			    $_SESSION['email'] = Util::myGet('email');
 				header("location:index.php");
 			}else{
-				$view=array("view", static::$object, "errorNonce.php");
-				$pagetitle='Email non validé';
-				require (File::build_path(array ("view","view.php")));
+				$error="Account isn't validated";
+				$postOrGet=Conf::getPostOrGet();
+				require (File::build_path(array ("view",static::$object,"login.php")));
 			}
    		}else{
-	   		$view=array("view", static::$object, "erreurConnect.php");
-			$pagetitle='Erreur connexion';
-			require (File::build_path(array ("view","view.php")));
-   			}
+			$error="Email or password incorrect";
+			$postOrGet=Conf::getPostOrGet();
+			require (File::build_path(array ("view",static::$object,"login.php")));
+   		}
     }
 
     public static function disconnect(){
@@ -47,22 +47,22 @@ class ControllerUser {
 				"email" => Util::myGet('email'),
 				"nonce" => NULL,
 			))){
-				$view=array("view", static::$object, "validate.php");
-				$pagetitle='Email validé';
-				require (File::build_path(array ("view","view.php")));
+				$validate="Account validated";
+				$postOrGet=Conf::getPostOrGet();
+				require (File::build_path(array ("view",static::$object,"login.php")));
 			}else{
-				$view=array("view", static::$object, "errorUpdate.php");
+				$view=array("view", static::$object, "errorUpdate.php");//TO DO
 				$pagetitle='User non maj';
 				require(File::build_path(array ("view","view.php")));
 			}
 		}else{
-			$view=array("view", static::$object, "errorValidate.php");
-			$pagetitle='Erreur validation email';
-			require(File::build_path(array ("view","view.php")));
+			$error="Error validation account";
+			$postOrGet=Conf::getPostOrGet();
+			require (File::build_path(array ("view",static::$object,"login.php")));
 		}
 	}
 
-    public static function read() {
+    public static function read() {//TO DO
         $email = $_GET['email'];
         $u = ModelUsers::select($email);
         if($u==false){
@@ -130,7 +130,7 @@ class ControllerUser {
 		  	}
     }
 
-    public static function update(){
+    public static function update(){// TO DO
     	if(!isset($_SESSION['email'])){
     		$view=array("view", static::$object, "connect.php");
 	      	$pagetitle='Connexion';
@@ -152,7 +152,7 @@ class ControllerUser {
 	    	}
     }
 
-    public static function updated(){
+    public static function updated(){// TO DO
     	if(!isset($_SESSION['email'])){
     		$view=array("view", static::$object, "connect.php");
 	        $pagetitle='Connexion';
@@ -200,7 +200,7 @@ class ControllerUser {
 	    }
     }
 
-    public static function delete(){
+    public static function delete(){// TO DO
     	if(!isset($_SESSION['email'])){
     		$view=array("view", static::$object, "connect.php");
 	    	$pagetitle='Connexion';
@@ -232,7 +232,7 @@ class ControllerUser {
 		}
 	}
 
-	public static function resetPassword(){
+	public static function resetPassword(){// TO COMPLETE
 		$headers = 'MIME-Version: 1.0’ . "\r\n"';
 		$headers .= 'Content-type: text/html; charset=iso-8859-1′ . "\r\n"';
 		$headers .= 'From: sgs@corentin-grard.fr’ . "\r\n"';
@@ -246,6 +246,15 @@ class ControllerUser {
 		}
 	}
 
+
+/**
+ * Check if an user(email) exist in the database 
+ *
+ * @param String  $_POST['email] email that we need to check
+ * 
+ * @author Corentin Grard <corentin.grard@gmail.com>
+ * @return Boolean true is user exist, else false
+ */ 
 	public static function existUser(){
 		if(Util::myGet('email')!=NULL){
 			$u=ModelUsers::select(Util::myGet('email'));

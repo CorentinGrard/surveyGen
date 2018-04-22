@@ -35,5 +35,15 @@ ALTER TABLE Constraints ADD CONSTRAINT FKConstraint444998 FOREIGN KEY (idQuestio
 
 
 
-
 INSERT INTO Profession(description) VALUES ('Teacher');
+
+
+INSERT INTO TypeOfQuestion(description) VALUES ('Free Text');
+INSERT INTO TypeOfQuestion(description) VALUES ('Free Integer');
+INSERT INTO TypeOfQuestion(description) VALUES ('Free Decimal');
+INSERT INTO TypeOfQuestion(description) VALUES ('Free Date');
+INSERT INTO TypeOfQuestion(description) VALUES ('Free Range');
+INSERT INTO TypeOfQuestion(description) VALUES ('Option');
+INSERT INTO TypeOfQuestion(description) VALUES ('Open Option');
+INSERT INTO TypeOfQuestion(description) VALUES ('Multiple Option');
+INSERT INTO TypeOfQuestion(description) VALUES ('Open Multiple Option');

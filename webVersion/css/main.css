@@ -3,3 +3,16 @@
     background-color: rgb(175, 175, 175);
     background-size: cover;
 }
+
+.error{
+    color:red;
+}
+
+.validate{
+    color:green;
+}
+
+.toggle{
+    display:inline;
+    cursor : pointer;
+}
