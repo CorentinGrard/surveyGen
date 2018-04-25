@@ -198,27 +198,17 @@ class ControllerUser {
 	            require(File::build_path(array ("view","view.php")));
 	        }
 	    }
-    }
+	}
 
-    public static function delete(){// TO DO
+
+    public static function delete(){
     	if(!isset($_SESSION['email'])){
-    		$view=array("view", static::$object, "connect.php");
-	    	$pagetitle='Connexion';
-	      	require(File::build_path(array ("view","view.php")));
-	    }else if(!Session::is_user(Util::myGet('email'))){
-	    	header('Location:index.php');
-	    }else{
-	    	$email = Util::myGet('email');
-	    	if (ModelUsers::delete($email)) {
-				if(Session::is_user($email))self::disconnect();
-				$tab_u = ModelUsers::selectAll();
-				$view = array("view", static::$object, "deleted.php");
-				$pagetitle = 'User supprimé';
-				require(File::build_path(array ("view","view.php")));
+    		header('location:index.php');
+		}else{
+	    	if(ModelUsers::delete($_SESSION['email'])) {
+				self::disconnect();
 	    	}else{
-	        	$view=array("view", static::$object, "erreurDelete.php");
-	        	$pagetitle='Erreur suppression';
-	    		require(File::build_path(array ("view","view.php")));
+	        	$error="Error while deleting your profile, please try again.";
 	    	}
 	    }
 	}

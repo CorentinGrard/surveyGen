@@ -1,59 +1,90 @@
 var nbQuestion=1;
+var idAnswer=1
 
 class Answer {
-	constructor(type, idQuestion, remove = true, param="", placeholder = 'Answer') {
+	constructor(type, idQuestion, remove = true , param="", placeholder = 'Answer', ok=true, prepend=true) {
 		this.active = true;
 		this.type=type;
 		this.idQuestion=idQuestion;
-		this.ok = true;
-		this.remove = remove;
+		this.id=idAnswer;
+		idAnswer++;
+		this.ok = ok;
+		this.delete = remove;
 		this.placeholder=placeholder;
 		this.param=param;
-		console.log($("#Q"+this.idQuestion+" #inputQ"+this.idQuestion));
-		$("#Q"+this.idQuestion+" #inputQ"+this.idQuestion).append('ui')
 		this.value="";
+		if(prepend){
+			$("#Q"+this.idQuestion+" #inputQ"+this.idQuestion).prepend(this.text());
+		}else{
+			$("#Q"+this.idQuestion+" #inputQ"+this.idQuestion).append(this.text());
+		}
+		this.eventOk();
+		this.eventDelete();
 	}
 
 	text () {
 		let text="";
+		console.log(survey)
 		if (this.active) {
-			text = '<div><input type="' + this.type + '"> <input type="text" class="answerChoose" placeholder="' + this.placeholder + '" ' + this.param + '>';
-			text += '<button type="button" class="ok"><i class="fa fa-check validate"></i></button>';
-			if (this.remove) {
+			text = '<div id="I'+this.id+'"><input type="' + this.type + '"> <input type="text" class="answerChoose" value="'+this.value+'" placeholder="' + this.placeholder + '" ' + this.param + '>';
+			if(this.ok) text += '<button type="button" class="ok"><i class="fa fa-check validate"></i></button>';
+			if (this.delete) {
 				text += '<button type="button" class="delete"><i class="fa fa-times error"></i></button>';
 			}
 			text += '</div>';
 		}
 		else {
-			text = '<div class="toggle">' + this.value + '</div>';
+			text = '<div id="I'+this.id+'"><input type="' + this.type + '"><div class="toggle">' + this.value + '</div></div>';
 		}
 		return text;		
 	};
 
-	affichage(){
-		this.path.replaceWith(this.text());
+	display(){
+		$('#I'+this.id).replaceWith(this.text());
 	}
 
-	toogleAtive() {
+	toogleActive() {
+		if(this.active)	this.getValue()
 		this.active = !this.active;
-		this.affichage();
+		this.display();
+		if(this.active){
+			this.eventOk()
+			if(this.delete) this.eventDelete()
+		}else{
+			this.eventdbClick()
+		}
 	};
-	toogleRemove () {
-		this.remove = !this.remove;
-		this.affichage();
+	toogleDelete () {
+		this.delete = !this.delete;
+		this.display();
 	};
 	getValue () {
-		this.value = this.path[0].childNodes[2].value;
+		this.value = $('#I'+this.id+" .answerChoose").val();
 	};
 	eventDelete () {
-		$(this.path + " .delete").click(function () {
-			this.path.remove();
+		let that=this;
+		$("#I"+this.id + " .delete").click(function () {
+			console.log('ui')
+			$("#I"+that.id).remove();
+			let index=survey.questions[that.idQuestion-1].answers.indexOf(that)
+			if (index > -1) {
+				survey.questions[that.idQuestion-1].answers.splice(index, 1);
+			}
 		});
 	};
 	eventOk () {
-		$(this.path + " .ok").click(function () {
-			this.toogleActive();
-		});
+		let that=this;
+		$("#I"+this.id + " .ok").click(function (x) {
+			that.getValue()
+			if(that.value!="")	that.toogleActive()
+		})	
+	};
+
+	eventdbClick(){
+		let that=this;
+		$('#I'+this.id+" .toggle").dblclick(function(x){
+			that.toogleActive()
+		})
 	};
 }
 class Question {
@@ -62,19 +93,19 @@ class Question {
 		nbQuestion++;
 		this.answers=[];
 		this.type=0;
-		this.affichage();
+		this.display();
 	}
 
-	addAnswer(){
+	addAnswer(remove=true){
 		if(this.type==6 || this.type==7){
-			this.answers.push(new Answer('radio',this.numero))
+			this.answers.push(new Answer('radio',this.numero,remove))
 		}else if(this.type==8 || this.type==9){
-			this.answers.push(new Answer('checkbox',this.numero))
+			this.answers.push(new Answer('checkbox',this.numero,remove))
 		}
 	}
 
-	affichage(){
-		let text = '<div id="Q'+this.numero+'">'
+	display(){
+		let text = '<div id="Q'+this.numero+'" class="question">'
 		text += '<div class="title">'
 		text += '<input type="text" placeholder="Question">'
 		text += '</div>'
@@ -87,55 +118,72 @@ class Question {
 		text += '<div id="inputQ'+this.numero+'"></div>'
 		text += '</div>'
 		$('#questions').append(text);
+		let that=this;
 		$("#Q"+this.numero+" .typeOfQuestion").change(function(x){
-			(survey.questions[(x.target.name)-1]).changeTypeOfQuestion(x);
+			that.changeTypeOfQuestion(x);
 		})
 	}
 
 	changeTypeOfQuestion(x){
+		this.answers=[];
 		let text;
 		this.type=parseInt(x.target.value);
 		switch(this.type) {
 			case 1:
-				text='<textarea readonly placeholder="Response"></textarea>';
+				$("#inputQ"+this.numero).html('<textarea readonly placeholder="Response"></textarea>');
 				break;
 			case 2:
-				text='<input type="number" value=0>'
+				$("#inputQ"+this.numero).html('<input type="number" value=0>')
 				break;
 			case 3:
-				text='<input type="number" step="0.01" value=0>';
+				$("#inputQ"+this.numero).html('<input type="number" step="0.01" value=0>');
 				break;
 			case 4:
-				text='<input type="date">';
+				$("#inputQ"+this.numero).html('<input type="date">');
 				break;
 			case 5:
-				text='<input type="range" min="0" max="10">';
+				$("#inputQ"+this.numero).html('<input type="range" min="0" max="10">');
 				break;
 			case 6:
-				this.addAnswer();
-				this.addAnswer();
-				text='<button class="addAnswer" type="button">Add an other answer</button><br>';
-				this.addEventAddAnwser()
+				$("#inputQ"+this.numero).empty();
+				this.addAnswer(false);
+				this.addAnswer(false);
+				$("#inputQ"+this.numero).append('<button class="addAnswer" type="button">Add an other answer</button><br>');
+				this.addEventAddAnwser();
 				break;
 			case 7:
-	
+				$("#inputQ"+this.numero).empty();
+				this.addAnswer(false);
+				this.addAnswer(false);
+				$("#inputQ"+this.numero).append('<button class="addAnswer" type="button">Add an other answer</button><br>');
+				this.addEventAddAnwser();
+				new Answer('radio',this.numero,false,"readonly","User answer",false,false);
+				
 				break;
 			case 8:
-	
+				$("#inputQ"+this.numero).empty();
+				this.addAnswer(false);
+				this.addAnswer(false);
+				$("#inputQ"+this.numero).append('<button class="addAnswer" type="button">Add an other answer</button><br>');
+				this.addEventAddAnwser();
 				break;
 			case 9:
-
+				$("#inputQ"+this.numero).empty();
+				this.addAnswer(false);
+				this.addAnswer(false);
+				$("#inputQ"+this.numero).append('<button class="addAnswer" type="button">Add an other answer</button><br>');
+				this.addEventAddAnwser();
+				new Answer('checkbox',this.numero,false,"readonly","User answer",false,false);
 				break;
 			default:
-				text='';
+				$("#inputQ"+this.numero).empty();
 		}
-		$("#inputQ"+this.numero).html(text);
 	}
 
 	addEventAddAnwser(){
-		$("Q"+this.numero+" .addAnswer").click(function(x){
-			console.log(x)
-			(survey.questions[(x.target.name)-1]).addAnswer()
+		let that=this;
+		$("#Q"+this.numero+" .addAnswer").click(function(x){
+			that.addAnswer()
 		})
 	}
 }

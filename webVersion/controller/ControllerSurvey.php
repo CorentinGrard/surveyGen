@@ -38,7 +38,7 @@ class ControllerSurvey {
 			}
 			Util::aff($tabS);
 			$view=array("view", static::$object, "list.php");
-			$pagetitle='Survers SGS';
+			$pagetitle='Surveys SGS';
 			require (File::build_path(array ("view","view.php")));
 		}else{
 			ControllerUser::default();
