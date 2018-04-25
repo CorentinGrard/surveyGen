@@ -9,9 +9,8 @@ class Answer {
 		this.remove = remove;
 		this.placeholder=placeholder;
 		this.param=param;
-		console.log('io');
-		let ui=$("#Q"+this.idQuestion+" #inputQ"+this.idQuestion);
-		ui.append('ui')
+		console.log($("#Q"+this.idQuestion+" #inputQ"+this.idQuestion));
+		$("#Q"+this.idQuestion+" #inputQ"+this.idQuestion).append('ui')
 		this.value="";
 	}
 
