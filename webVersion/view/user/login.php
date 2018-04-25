@@ -22,6 +22,12 @@ require(File::build_path(array("view","head.php")));
                 <input class="form-check-input" type="checkbox" name="rememberPass"> Remember Password</label>
             </div>
           </div>
+          <div class="error">
+            <?php if(isset($error)) echo $error;?>
+          </div>
+          <div class="validate">
+            <?php if(isset($validate)) echo $validate;?>
+          </div>
           <input class="btn btn-primary btn-block" type="submit" value="Login">
         </form>
         <div class="text-center">

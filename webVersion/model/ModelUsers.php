@@ -2,11 +2,11 @@
 class ModelUsers extends Model{
 
 	private $email;
-	private $idProfession;
+	private $idprofession;
 	private $name;
-	private $lastName;
-	private $passord;
-	private $birthDate;
+	private $lastname;
+	private $password;
+	private $birthdate;
 	private $nonce;
 
 	static protected $object ='Users';
@@ -35,14 +35,14 @@ class ModelUsers extends Model{
 		 }
 	}
 	///constructeur
-	public function __construct($email=NULL, $idProfession=NULL, $name=NULL, $lastName=NULL, $passord=NULL, $birthDate=NULL, $nonce=NULL){
-		if (!is_null($email) && !is_null($idProfession) && !is_null($name) && !is_null($lastName) && !is_null($passord) && !is_null($birthDate) &&!is_null($nonce)){
+	public function __construct($email=NULL, $idprofession=NULL, $name=NULL, $lastname=NULL, $passord=NULL, $birthdate=NULL, $nonce=NULL){
+		if (!is_null($email) && !is_null($idprofession) && !is_null($name) && !is_null($lastname) && !is_null($password) && !is_null($birthdate) &&!is_null($nonce)){
 				$this->email=$email;
-				$this->idProfession=$idProfession;
+				$this->idprofession=$idprofession;
 				$this->name=$name;
-				$this->lastName=$lastName;
-				$this->passord=$passord;
-				$this->birthDate=$birthDate;
+				$this->lastname=$lastname;
+				$this->password=$password;
+				$this->birthdate=$birthdate;
 				$this->nonce=$nonce;
 		}
 	}

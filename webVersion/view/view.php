@@ -1,5 +1,6 @@
 <?php
 require(File::build_path(array("view","head.php")));
+require_once(File::build_path(array("model","ModelUsers.php")));
 ?>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -39,10 +40,10 @@ require(File::build_path(array("view","head.php")));
 					</a>
 					<ul class="sidenav-second-level collapse" id="collapseMulti">
 						<li>
-							<a href="#">Create a survey</a>
+							<a href="?controller=survey&action=create">Create a survey</a>
 						</li>
 						<li>
-							<a href="#">My surveys</a>
+							<a href="?controller=survey&action=readAll">My surveys</a>
 						</li>
 					</ul>
 				</li>
@@ -105,16 +106,11 @@ require(File::build_path(array("view","head.php")));
 					</div>
 				</li>
 				<li class="nav-item">
-					<form class="form-inline my-2 my-lg-0 mr-lg-2">
-						<div class="input-group">
-							<input class="form-control" type="text" placeholder="Search for...">
-							<span class="input-group-append">
-								<button class="btn btn-primary" type="button">
-									<i class="fa fa-search"></i>
-								</button>
-							</span>
-						</div>
-					</form>
+					<a class="nav-link" href="">
+					<?php $u=ModelUsers::select($_SESSION['email']);
+					echo($u->get('name')." ".$u->get('lastname'));
+					?>
+					</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="modal" data-target="#exampleModal">
