@@ -12,7 +12,7 @@ class Answer {
 		this.delete = remove;
 		this.placeholder=placeholder;
 		this.param=param;
-		this.value="";
+		this.description="";
 		if(prepend){
 			$("#Q"+this.idQuestion+" #inputQ"+this.idQuestion).prepend(this.text());
 		}else{
@@ -24,9 +24,8 @@ class Answer {
 
 	text () {
 		let text="";
-		console.log(survey)
 		if (this.active) {
-			text = '<div id="I'+this.id+'"><input type="' + this.type + '"> <input type="text" class="answerChoose" value="'+this.value+'" placeholder="' + this.placeholder + '" ' + this.param + '>';
+			text = '<div id="I'+this.id+'"><input type="' + this.type + '"> <input type="text" class="answerChoose" value="'+this.description+'" placeholder="' + this.placeholder + '" ' + this.param + '>';
 			if(this.ok) text += '<button type="button" class="ok"><i class="fa fa-check validate"></i></button>';
 			if (this.delete) {
 				text += '<button type="button" class="delete"><i class="fa fa-times error"></i></button>';
@@ -34,7 +33,7 @@ class Answer {
 			text += '</div>';
 		}
 		else {
-			text = '<div id="I'+this.id+'"><input type="' + this.type + '"><div class="toggle">' + this.value + '</div></div>';
+			text = '<div id="I'+this.id+'"><input type="' + this.type + '"><div class="toggle">' + this.description + '</div></div>';
 		}
 		return text;		
 	};
@@ -59,12 +58,11 @@ class Answer {
 		this.display();
 	};
 	getValue () {
-		this.value = $('#I'+this.id+" .answerChoose").val();
+		this.description = $('#I'+this.id+" .answerChoose").val();
 	};
 	eventDelete () {
 		let that=this;
 		$("#I"+this.id + " .delete").click(function () {
-			console.log('ui')
 			$("#I"+that.id).remove();
 			let index=survey.questions[that.idQuestion-1].answers.indexOf(that)
 			if (index > -1) {
@@ -76,7 +74,7 @@ class Answer {
 		let that=this;
 		$("#I"+this.id + " .ok").click(function (x) {
 			that.getValue()
-			if(that.value!="")	that.toogleActive()
+			if(that.description!="")	that.toogleActive()
 		})	
 	};
 
@@ -190,6 +188,31 @@ class Question {
 
 class Survey {
 	constructor() {
+		this.projectId;
+		this.name;
+		this.description;
+		this.objective;
+		this.startDate;
+		this.finalDate;
+		let that=this;
+		$("#project_id").change(function(){
+			that.projectId=this.value;
+		})
+		$("#name_id").change(function(){
+			that.name=this.value;
+		})
+		$("#description_id").change(function(){
+			that.description=this.value;
+		})
+		$("#objective_id").change(function(){
+			that.objective=this.value;
+		})
+		$("#sDate_id").change(function(){
+			that.startDate=this.value;
+		})
+		$("#eDate_id").change(function(){
+			that.finalDate=this.value;
+		})
 		this.questions = [];
 		this.questions.push(new Question())
 	}

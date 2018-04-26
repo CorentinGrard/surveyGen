@@ -18,10 +18,9 @@ $('#addQuestion').click(function(){
 function sendData(){
 	let data=JSON.stringify(survey);
 	console.log(data)
-	$.ajax({
-		url: "?controller=survey&action=created",
-		success: function(){
-			console.log("ok")
-		}
-	})
+	$.post("?controller=survey&action=created",
+	{ json_string:data },
+	function(data){
+		$('#addQuestion').html(data)
+	});
 }
