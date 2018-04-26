@@ -62,7 +62,7 @@ class ControllerUser {
 		}
 	}
 
-    public static function read() {//TO DO
+    public static function read() {
         $email = $_GET['email'];
         $u = ModelUsers::select($email);
         if($u==false){
@@ -70,7 +70,7 @@ class ControllerUser {
             $pagetitle='User non trouvé';
         	require(File::build_path(array ("view","view.php")));
         }else{ 
-            $view=array("view", static::$object, "detail.php");
+            $view=array("view", static::$object, "userDetails.php");
             $pagetitle='Détail d\'un User';
     	    require(File::build_path(array ("view","view.php")));
  		}
@@ -96,7 +96,7 @@ class ControllerUser {
 			}
         	if(Util::myGet('password')!=Util::myGet('confPassword')){
 				$view = array("view", static::$object, "connect.php");
-	        	$pagetitle = 'Erreur mot de passe';
+				$pagetitle = 'Erreur mot de passe';
 	      		require(File::build_path(array ("view","view.php")));
         	}else{
 				$nonce=Security::generateRandomHex();
@@ -132,12 +132,9 @@ class ControllerUser {
 
     public static function update(){// TO DO
     	if(!isset($_SESSION['email'])){
-    		$view=array("view", static::$object, "connect.php");
-	      	$pagetitle='Connexion';
-	      	require(File::build_path(array ("view","view.php")));
-	    }else if(!Session::is_user(Util::myGet('email'))){
-	    	header('Location:index.php');
-	    }else{
+			header('Location:index.php');
+		}
+		else {
 	        $email=Util::myGet('email');
 	        $User = ModelUsers::select($email);
 	        if($User==false){
@@ -146,7 +143,7 @@ class ControllerUser {
 	            require(File::build_path(array ("view","view.php")));
 	        }
 			$postOrGet=Conf::getPostOrGet();
-	        $view=array("view", static::$object, "update.php");
+	        $view=array("view", static::$object, "updateInfos.php");
 	        $pagetitle='Formulaire maj User';
 	        require(File::build_path(array ("view","view.php")));
 	    	}
