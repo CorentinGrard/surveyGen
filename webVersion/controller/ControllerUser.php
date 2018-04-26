@@ -177,23 +177,19 @@ class ControllerUser {
 		  	}
     }
 
-    public static function update(){// TO DO
+    public static function update(){
     	if(!isset($_SESSION['email'])){
-    		$view=array("view", static::$object, "connect.php");
-	      	$pagetitle='Connexion';
-	      	require(File::build_path(array ("view","view.php")));
-	    }else if(!Session::is_user(Util::myGet('email'))){
 	    	header('Location:index.php');
 	    }else{
 	        $email=Util::myGet('email');
 	        $User = ModelUsers::select($email);
 	        if($User==false){
 	            $view=array("view", static::$object, "errorUser.php");
-	            $pagetitle='User non trouvé';
+	            $pagetitle='User not found';
 	            require(File::build_path(array ("view","view.php")));
 	        }
 			$postOrGet=Conf::getPostOrGet();
-	        $view=array("view", static::$object, "update.php");
+	        $view=array("view", static::$object, "updateInfos.php");
 	        $pagetitle='Formulaire maj User';
 	        require(File::build_path(array ("view","view.php")));
 	    	}
