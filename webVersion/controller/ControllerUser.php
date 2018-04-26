@@ -51,9 +51,9 @@ class ControllerUser {
 				$postOrGet=Conf::getPostOrGet();
 				require (File::build_path(array ("view",static::$object,"login.php")));
 			}else{
-				$view=array("view", static::$object, "errorUpdate.php");//TO DO
-				$pagetitle='User non maj';
-				require(File::build_path(array ("view","view.php")));
+				$error="Error update user";
+				$postOrGet=Conf::getPostOrGet();
+				require (File::build_path(array ("view",static::$object,"login.php")));
 			}
 		}else{
 			$error="Error validation account";
@@ -66,8 +66,9 @@ class ControllerUser {
         $email = $_GET['email'];
         $u = ModelUsers::select($email);
         if($u==false){
-            $view=array("view", static::$object, "errorUser.php");
-            $pagetitle='User non trouvé';
+			$error="User don't exist";
+            $view=array("view","dashboard", "dashboard.php");
+            $pagetitle='SGS';
         	require(File::build_path(array ("view","view.php")));
         }else{ 
             $view=array("view", static::$object, "detail.php");
@@ -77,14 +78,10 @@ class ControllerUser {
     }
 
   	public static function create(){
-		if(isset($_SESSION['email'])){
-			header('location:index.php');
-		}else{
-			$today = date('Y-m-d');
-			$postOrGet=Conf::getPostOrGet();
-			$professionTab=ModelProfession::selectAll();
-			require(File::build_path(array ("view",static::$object,"register.php")));
-		}
+		$today = date('Y-m-d');
+		$postOrGet=Conf::getPostOrGet();
+		$professionTab=ModelProfession::selectAll();
+		require(File::build_path(array ("view",static::$object,"register.php")));
     }
 
     public static function created(){
@@ -202,24 +199,16 @@ class ControllerUser {
 
 
     public static function delete(){
-    	if(!isset($_SESSION['email'])){
-    		header('location:index.php');
-		}else{
-	    	if(ModelUsers::delete($_SESSION['email'])) {
-				self::disconnect();
-	    	}else{
-	        	$error="Error while deleting your profile, please try again.";
-	    	}
+	    if(ModelUsers::delete($_SESSION['email'])) {
+			self::disconnect();
+	    }else{
+	      	$error="Error while deleting your profile, please try again.";
 	    }
 	}
 	
 	public static function forgotPassword(){
-		if(isset($_SESSION['email'])){
-			header("location:index.php");
-		}else{
-			$postOrGet=Conf::getPostOrGet();
-			require(File::build_path(array ("view",static::$object,"forgot-password.php")));
-		}
+		$postOrGet=Conf::getPostOrGet();
+		require(File::build_path(array ("view",static::$object,"forgot-password.php")));
 	}
 
 	public static function resetPassword(){// TO COMPLETE
@@ -237,14 +226,14 @@ class ControllerUser {
 	}
 
 
-/**
- * Check if an user(email) exist in the database 
- *
- * @param String  $_POST['email] email that we need to check
- * 
- * @author Corentin Grard <corentin.grard@gmail.com>
- * @return Boolean true is user exist, else false
- */ 
+	/**
+	 * Check if an user(email) exist in the database 
+	 *
+	 * @param String  $_POST['email] email that we need to check
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 * @return Boolean true is user exist, else false
+	 */ 
 	public static function existUser(){
 		if(Util::myGet('email')!=NULL){
 			$u=ModelUsers::select(Util::myGet('email'));

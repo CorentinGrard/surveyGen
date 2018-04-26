@@ -14,3 +14,14 @@ $(document).ready(function() {
 $('#addQuestion').click(function(){
 	survey.addQuestion();
 })
+
+function sendData(){
+	let data=JSON.stringify(survey);
+	console.log(data)
+	$.ajax({
+		url: "?controller=survey&action=created",
+		success: function(){
+			console.log("ok")
+		}
+	})
+}
