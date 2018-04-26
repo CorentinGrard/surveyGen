@@ -17,6 +17,14 @@ class ControllerSurvey {
 		}
 	}
 
+	 /**
+	 * manages survey creation form.
+	 * 
+	 * @throws "account isn't validated"
+	 * @throws "Email or password incorrect"
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function create(){
 		if(isset($_SESSION['email'])){
 			$projects=ModelProject::selectProjects($_SESSION['email']);
@@ -28,7 +36,12 @@ class ControllerSurvey {
 			ControllerUser::default();
 		}
 	}
-
+	/**
+	 * Finds the surveys in the databse
+	 * Transfer them to list.php for display
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function readAll(){
 		if(isset($_SESSION['email'])){
 			$tabP=ModelProject::selectProjects($_SESSION['email']);
@@ -44,7 +57,11 @@ class ControllerSurvey {
 			ControllerUser::default();
 		}
 	}
-
+	 /**
+	 * Gets question type in the database
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function getTypeOfQuestion(){
 		$typeOfQuestionTab=ModelTypeOfQuestion::selectAll();
 		echo json_encode($typeOfQuestionTab);

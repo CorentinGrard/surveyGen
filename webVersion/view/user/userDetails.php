@@ -12,7 +12,7 @@ require(File::build_path(array("view","head.php")));
                 echo("<br>");
                 echo($u->get('birthdate'));
                 echo("<br>");
-                echo("<a class=\"nav-link\" href=\"?controller=user&action=update&email=".$u->get('email')."\">");
+                echo("<a href=\"?controller=user&action=update&email=".$u->get('email')."\">");
                     echo("Edit Profile");
                 echo ("</a>");
             ?>

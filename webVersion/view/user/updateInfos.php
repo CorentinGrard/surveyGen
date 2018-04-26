@@ -1,9 +1,8 @@
 <?php
 require(File::build_path(array("view","head.php")));
 ?>
-<p>
-    Edit your profile
-</p>
+
+<h1> Edit your profile</h1
 
 <form action="updated.php" method="post">
 Current e-mail : <?php echo $User->get('email')?>;
