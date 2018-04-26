@@ -99,20 +99,20 @@ class ControllerUser {
 	 * 
 	 * @author Esteban Legrand <esteban.legrand@outlook.fr>
 	 */ 
-    public static function read() {//TO DO
-        $email = $_GET['email'];
-        $u = ModelUsers::select($email);
-        if($u==false){
-			$error="User don't exist";
-            $view=array("view","dashboard", "dashboard.php");
-            $pagetitle='SGS';
-        	require(File::build_path(array ("view","view.php")));
-        }else{ 
-            $view=array("view", static::$object, "detail.php");
-            $pagetitle='Détail d\'un User';
-    	    require(File::build_path(array ("view","view.php")));
- 		}
-    }
+    public static function read() {
+		$email = $_GET['email'];
+		$u = ModelUsers::select($email);
+		if($u==false){
+			$error="User not found";
+			$view=array("view", "dashboard", "dashboard.php");
++           $pagetitle='SGS';
+			require(File::build_path(array ("view","view.php")));
+		}else{ 
+			$view=array("view", static::$object, "userDetails.php");
+			$pagetitle='Profile - SGS';
+			require(File::build_path(array ("view","view.php")));
+		 }
+	}
 
     /**
 	 * manages user creation form
