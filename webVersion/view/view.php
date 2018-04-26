@@ -106,11 +106,12 @@ require_once(File::build_path(array("model","ModelUsers.php")));
 					</div>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="">
-					<?php $u=ModelUsers::select($_SESSION['email']);
-					echo($u->get('name')." ".$u->get('lastname'));
+					<?php
+						$u=ModelUsers::select($_SESSION['email']);
+						echo("<a class=\"nav-link\" href=\"?controller=user&action=read&email=".$u->get('email')."\">");
+							echo($u->get('name')." ".$u->get('lastname'));
+						echo("</a>")
 					?>
-					</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="modal" data-target="#exampleModal">
