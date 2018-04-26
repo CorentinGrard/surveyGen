@@ -106,11 +106,11 @@ require_once(File::build_path(array("model","ModelUsers.php")));
 					</div>
 				</li>
 				<li class="nav-item">
-				<?php $u=ModelUsers::select($_SESSION['email']);
-					echo("<a class=\"nav-link\" href=\"?controller=user&action=read&email=".$u->get('email')."\">");
-						echo($u->get('name')." ".$u->get('lastname'));
-					echo ("</a>");
-				?>
+					<a class="nav-link" href="">
+					<?php $u=ModelUsers::select($_SESSION['email']);
+					echo($u->get('name')." ".$u->get('lastname'));
+					?>
+					</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="modal" data-target="#exampleModal">
@@ -157,6 +157,20 @@ require_once(File::build_path(array("model","ModelUsers.php")));
 				</div>
 			</div>
 		</div>
+		<!-- Error Modal-->
+		<?php if (isset($error)){ ?>
+		<div class="alert alert-dismissible alert-danger">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong>Oh snap!</strong> <?php echo $error; ?>
+		</div>
+		<?php } ?>
+		<!-- Valid Modal-->
+		<?php if (isset($valid)){ ?>
+		<div class="alert alert-dismissible alert-success">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong><?php echo $valid; ?></strong>
+		</div>
+		<?php } ?>
 <?php
 require(File::build_path(array("view","endFile.php")));
-?>
+ ?>

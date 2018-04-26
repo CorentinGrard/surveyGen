@@ -16,3 +16,9 @@
     display:inline;
     cursor : pointer;
 }
+
+.alert{
+    position: fixed;
+    top:70px;
+    right: 50%;
+}

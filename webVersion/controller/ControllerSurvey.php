@@ -10,11 +10,7 @@ class ControllerSurvey {
 	protected static $object='survey';
 
 	public static function default(){
-        if(isset($_SESSION['email'])){
-            ControllerSurvey::readAll();
-        }else{
-			ControllerUser::default();
-		}
+    	ControllerSurvey::readAll();
 	}
 
 	 /**
@@ -26,15 +22,11 @@ class ControllerSurvey {
 	 * @author Corentin Grard <corentin.grard@gmail.com>
 	 */ 
 	public static function create(){
-		if(isset($_SESSION['email'])){
-			$projects=ModelProject::selectProjects($_SESSION['email']);
-			$today = date('Y-m-d');
-			$view=array("view", static::$object, "create.php");
-			$pagetitle='SGS - Create survey';
-			require (File::build_path(array ("view","view.php")));
-		}else{
-			ControllerUser::default();
-		}
+		$projects=ModelProject::selectProjects($_SESSION['email']);
+		$today = date('Y-m-d');
+		$view=array("view", static::$object, "create.php");
+		$pagetitle='SGS - Create survey';
+		require (File::build_path(array ("view","view.php")));
 	}
 	/**
 	 * Finds the surveys in the databse
@@ -43,19 +35,14 @@ class ControllerSurvey {
 	 * @author Corentin Grard <corentin.grard@gmail.com>
 	 */ 
 	public static function readAll(){
-		if(isset($_SESSION['email'])){
-			$tabP=ModelProject::selectProjects($_SESSION['email']);
-			$tabS=array();
-			foreach($tabP as $project){
-				$tabS=array_merge($tabS,ModelSurvey::selectByProject($project->get('id')));
-			}
-			Util::aff($tabS);
-			$view=array("view", static::$object, "list.php");
-			$pagetitle='Survers SGS';
-			require (File::build_path(array ("view","view.php")));
-		}else{
-			ControllerUser::default();
+		$tabP=ModelProject::selectProjects($_SESSION['email']);
+		$tabS=array();
+		foreach($tabP as $project){
+			$tabS=array_merge($tabS,ModelSurvey::selectByProject($project->get('id')));
 		}
+		$view=array("view", static::$object, "list.php");
+		$pagetitle='Surveys SGS';
+		require (File::build_path(array ("view","view.php")));
 	}
 	 /**
 	 * Gets question type in the database

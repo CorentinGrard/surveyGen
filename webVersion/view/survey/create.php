@@ -38,9 +38,6 @@
 		<br>
   	<button class="btn btn-primary">Create survey</button>
 </form>
-<<<<<<< HEAD
+
 <script src="./js/classSurvey.js" defer></script>
-<script src="./js/createSurvey.old.js" defer></script>
-=======
 <script src="./js/createSurvey.js" defer></script>
->>>>>>> 9c6aeb115b711b572787aacdea2409bdb337ba6e

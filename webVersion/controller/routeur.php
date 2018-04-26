@@ -6,6 +6,7 @@ require_once (File::build_path(array ("controller","ControllerDashboard.php")));
 require_once (File::build_path(array ("controller","Controller.php")));
 
 $controller_default="user";
+$unlogUserAction=array("create","created","connected","default","validate","forgotPassword","resetPassword");
 if(!is_null(Util::myGet('controller'))){
 	$controller_class = 'Controller'.ucfirst(Util::myGet('controller'));
 }else{
@@ -18,11 +19,15 @@ if(class_exists($controller_class)){
 		$action = 'default';
 	}
 	if(in_array($action, get_class_methods($controller_class))){
-		$controller_class::$action();
+		if((!isset($_SESSION['email']) && !($controller_class=="ControllerUser" && in_array($action,$unlogUserAction))) || (isset($_SESSION['email']) && $controller_class=="ControllerUser" && in_array($action,$unlogUserAction))){
+			ControllerUser::default();
+		}else{
+			$controller_class::$action();
+		}
 	}else{
-		Controller::error();
+		Controller::errorAction();
 	}
 }else{
-	Controller::error();
+	Controller::errorClass();
 }
 ?>

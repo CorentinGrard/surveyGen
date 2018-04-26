@@ -6,6 +6,11 @@ class ControllerDashboard {
 
 	protected static $object='Dashboard';
 
+	/**
+	 * By default we diplay the dashboard
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function default(){
 		$view=array("view", static::$object, "dashboard.php");
 		$pagetitle='SGS Dashboard';
