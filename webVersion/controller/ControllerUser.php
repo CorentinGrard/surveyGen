@@ -8,15 +8,32 @@ class ControllerUser {
 
 	protected static $object='user';
 
+  	/**
+	 * Executes a default fonction when no action is specified in the URL
+	 * 
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function default(){
         if(isset($_SESSION['email'])){
             ControllerDashboard::default();
         }else{
       		$postOrGet=Conf::getPostOrGet();
-			require (File::build_path(array ("view",static::$object,"login.php")));
-		}
+			    require (File::build_path(array ("view",static::$object,"login.php")));
+		    }
     }
 
+  	/**
+	 * manages conection.
+	 * Initializes the session and redirects the user to correct page.
+	 * index.php if success
+	 * login.php if failure
+	 * 
+	 * @throws "account isn't validated"
+	 * @throws "Email or password incorrect"
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
     public static function connected(){
 	    if(Util::myGet('email')!='' && Util::myGet('password')!='' && ModelUsers::checkPassword(Util::myGet('email'),Security::encode(Util::myGet('password')))){
 			$u=ModelUsers::select(Util::myGet('email'));
@@ -35,11 +52,23 @@ class ControllerUser {
    		}
     }
 
+  	/**
+	 * manages diconection.
+	 * destroy the session
+	 * redirects to index.php
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
     public static function disconnect(){
     	session_destroy();
     	header('Location:index.php');
     }
 
+   /**
+	 * Email validation of an account.
+	 * Succeeds if the nonce if the nonce in the Email sent is equal to the nounce of the user $u in the database
+	 * @throws "Error validation account"
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function validate(){
 		$u=ModelUsers::select(Util::myGet('email'));
 		if($u!=false && $u->get('nonce')==Util::myGet('nonce')){
@@ -61,7 +90,15 @@ class ControllerUser {
 			require (File::build_path(array ("view",static::$object,"login.php")));
 		}
 	}
-
+  
+	 /**
+	 * prepare the details of the user connected by interacting with ModelUsers
+	 * Transfer informations to a view via $u
+	 * 
+	 * @throws "User not found"
+	 * 
+	 * @author Esteban Legrand <esteban.legrand@outlook.fr>
+	 */ 
     public static function read() {//TO DO
         $email = $_GET['email'];
         $u = ModelUsers::select($email);
@@ -77,6 +114,11 @@ class ControllerUser {
  		}
     }
 
+    /**
+	 * manages user creation form
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
   	public static function create(){
 		$today = date('Y-m-d');
 		$postOrGet=Conf::getPostOrGet();
@@ -84,6 +126,14 @@ class ControllerUser {
 		require(File::build_path(array ("view",static::$object,"register.php")));
     }
 
+  	 /**
+	 * manages conection of a user.
+	 * 
+	 * @throws "Email error"
+	 * @throws "Password error"
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
     public static function created(){
 			$email=Util::myGet('email');
 			if(filter_var(Util::myGet('email'),FILTER_VALIDATE_EMAIL)==false){
@@ -206,6 +256,11 @@ class ControllerUser {
 	    }
 	}
 	
+  	/**
+	 * Handles the case of password forgotten
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function forgotPassword(){
 		$postOrGet=Conf::getPostOrGet();
 		require(File::build_path(array ("view",static::$object,"forgot-password.php")));
