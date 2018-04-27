@@ -7,7 +7,7 @@ require(File::build_path(array("view","head.php")));
 <form method="<?php echo $postOrGet; ?>" action="index.php">
 <input type='hidden' name='controller' value='user'>
 <input type='hidden' name='action' value='updated'>
-<input type="text" name="email" value="<?php echo $u->get('email');?>">
+<input type="text" name="email" value=<?php echo $u->get('email');?>>
 <br>
 <br>
 <input type="submit">

@@ -197,18 +197,16 @@ class ControllerUser {
 
 
 		public static function updated(){
-			$u = ModelUsers::select($email);
-			$newEmail=Util::myGet('email');
+			$newEmail=Util::myGet("email");
+			$oldEmail = $_SESSION["email"];
 				ModelUsers::update(array(
-					"email" => $newEmail,
-					"idProfession" => $u -> $idprofession,
-					"name" => $u -> $name,
-					"lastName" => $u -> $lastname,
-		      "password"=>Security::encode($u -> $password),
-					"birthDate"=>$u -> $birthdate,
-					"nonce"=>$u -> $nonce
+					"newEmail" => $newEmail,
+					"oldEmail" => $oldEmail
 				));
-		}
+			$_SESSION["email"] = $newEmail;
+	}
+
+
     public static function updated2(){// TO DO
     	if(!isset($_SESSION['email'])){
     			$view=array("view", static::$object, "querty.php");

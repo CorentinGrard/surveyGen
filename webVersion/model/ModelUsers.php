@@ -12,6 +12,17 @@ class ModelUsers extends Model{
 	static protected $object ='Users';
 	protected static $primary='email';
 
+
+	public static function update($data){
+		$sql = "UPDATE users SET email=:tag WHERE email=:tag2";
+		$req_prep = Model::$pdo->prepare($sql);
+    	$values = array(
+		"tag" => $data["newEmail"],
+		"tag2" => $data["oldEmail"]
+		);
+		$req_prep->execute($values);
+	}
+
 	// public static function update($data){
 	// 	$sql= "UPDATE users SET";
 	// 	foreach ($data as $key => $value){
