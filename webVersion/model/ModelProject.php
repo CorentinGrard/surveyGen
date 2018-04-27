@@ -8,7 +8,13 @@ class ModelProject extends Model{
 
   	static protected $object ='project';
   	protected static $primary='id';
-
+	/**
+	 * Select all the projects for a specific user
+	 * 
+	 * @throws "Database error"
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
   	public static function selectProjects($email){
 		$table_name=static::$object;
 		$class_name='Model'.ucfirst($table_name);
@@ -23,7 +29,7 @@ class ModelProject extends Model{
 			if (Conf::getDebug()) {
 			echo $e->getMessage();
 			} else {
-			echo 'Une erreur est survenue<a href="./index.php"> retour a la page d\'accueil </a>';
+			echo 'An error occured<a href="./index.php">back to the homepage</a>';
 			}
 			die();
 		}
@@ -44,9 +50,9 @@ class ModelProject extends Model{
 			$req_prep->execute($data);
 		} catch (PDOException $e) {
 			if (Conf::getDebug()) {
-				echo $e->getMessage(); // affiche un message d'erreur
+				echo $e->getMessage(); // an error message
 				} else {
-					echo 'Une erreur est survenue <a href="./index.php"> retour a la page d\'accueil </a>';
+					echo 'An error occured<a href="./index.php">back to the homepage</a>';
 				}
 			die();
 		}
@@ -97,7 +103,7 @@ class ModelProject extends Model{
 	 	}
 	}
 
-  ///constructeur
+  ///constructor
 	public function __construct($id=NULL, $name=NULL, $description=NULL, $userEmail=NULL){
 		if (!is_null($id) && !is_null($description) && !is_null($userEmail)){
 			$this->id=$id;

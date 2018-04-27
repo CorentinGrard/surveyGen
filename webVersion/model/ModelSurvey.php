@@ -13,7 +13,13 @@ class ModelSurvey extends Model{
 	static protected $object ='survey';
 	protected static $primary='id';
 	
-
+	/**
+	 * Requests all the surveys of a specific project
+	 * 
+	 * @throws "Database error"
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function selectByProject($idProject){
 		$table_name=static::$object;
 		$class_name='Model'.ucfirst($table_name);
@@ -21,9 +27,9 @@ class ModelSurvey extends Model{
 			$rep=Model::$pdo->query("SELECT * FROM $table_name WHERE projectid=$idProject");
 		} catch (PDOException $e) {
 			if (Conf::getDebug()) {
-			echo $e->getMessage(); // affiche un message d'erreur
+			echo $e->getMessage(); // an error message
 			} else {
-			echo 'Une erreur est survenue <a href="./index.php"> retour a la page d\'accueil </a>';
+			echo 'An error occured<a href="./index.php">back to the home page</a>';
 			}
 			die();
 			}
@@ -31,7 +37,7 @@ class ModelSurvey extends Model{
 		return $rep->fetchAll();
 	}
 
-	///constructeur
+	///constructor
 	public function __construct($id=NULL, $idProject=NULL, $name=NULL,$description=NULL,$objective=NULL, $startDate=NULL, $finalDate=NULL, $DBnName=NULL){
 		if (!is_null($id) && !is_null($idProject) && !is_null($name) && !is_null($description) && !is_null($objective) && !is_null($startDate) &&!is_null($finalDate)&&!is_null($DBnName)){
 			$this->id=$id;

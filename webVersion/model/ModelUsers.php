@@ -34,7 +34,7 @@ class ModelUsers extends Model{
 				$this->$attribut=$valeur;
 		 }
 	}
-	///constructeur
+	///constructor
 	public function __construct($email=NULL, $idprofession=NULL, $name=NULL, $lastname=NULL, $passord=NULL, $birthdate=NULL, $nonce=NULL){
 		if (!is_null($email) && !is_null($idprofession) && !is_null($name) && !is_null($lastname) && !is_null($password) && !is_null($birthdate) &&!is_null($nonce)){
 				$this->email=$email;
