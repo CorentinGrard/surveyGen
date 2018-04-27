@@ -176,7 +176,13 @@ class ControllerUser {
 		  		}
 		  	}
     }
-
+	/**
+	 *Manages update form of the user's account infos
+	 * 
+	 * @throws "User not found"
+	 * 
+	 * @author Esteban Legrand <esteban.legrand@outlook.fr>
+	 */ 
     public static function update(){
     	if(!isset($_SESSION['email'])){
 	    	header('Location:index.php');

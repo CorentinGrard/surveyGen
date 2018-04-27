@@ -5,6 +5,13 @@ require_once (File::build_path(array ("config","Conf.php")));
 class Model{
 	public static $pdo;
 
+	/**
+	 * Connection to the database
+	 * 
+	 * @throws "Database error"
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function Init(){
 		$hostname=Conf::getHostname();
 		$database_name=Conf::getDatabase();
@@ -15,14 +22,20 @@ class Model{
 			self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch (PDOException $e) {
 			if (Conf::getDebug()) {
-			echo $e->getMessage(); // affiche un message d'erreur
+			echo $e->getMessage();//an error message
 			} else {
-			echo 'Une erreur est survenue <a href="./index.php"> retour a la page d\'accueil </a>';
+			echo 'An error occured <a href="./index.php">back to the home page</a>';
 			}
 			die();
 		}
 	}
-	
+	/**
+	 * Requests all the  projects/surveys/users...
+	 * 
+	 * @throws "Database error"
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function selectAll(){
 		$table_name=static::$object;
 		$class_name='Model'.ucfirst($table_name);
@@ -30,9 +43,9 @@ class Model{
 			$rep=Model::$pdo->query("SELECT * FROM $table_name");
 		} catch (PDOException $e) {
 			if (Conf::getDebug()) {
-			echo $e->getMessage(); // affiche un message d'erreur
+			echo $e->getMessage(); an error message
 			} else {
-			echo 'Une erreur est survenue <a href="./index.php"> retour a la page d\'accueil </a>';
+			echo 'An error occured <a href="./index.php">back to the home page</a>';
 			}
 			die();
 			}
@@ -40,6 +53,13 @@ class Model{
 		return $rep->fetchAll();
 	}
 
+  	 /**
+	 * Requests a specific project/survey/user identified by $primary_value
+	 * 
+	 * @throws "Database error"
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function select($primary_value){
 		$table_name=static::$object;
 		$class_name='Model'.ucfirst($table_name);
@@ -53,21 +73,28 @@ class Model{
 			$req_prep->execute($values);
 		} catch (PDOException $e) {
 			if (Conf::getDebug()) {
-			echo $e->getMessage(); // affiche un message d'erreur
+			echo $e->getMessage(); // an error message
 			} else {
-				echo 'Une erreur est survenue <a href="./index.php"> retour a la page d\'accueil </a>';
+				echo 'An error occured <a href="./index.php">back to the homepage</a>';
 			}
 			die();
 		}
-		// On récupère les résultats comme précédemment
+		//We get the results in a table
 		$req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
 		$tab = $req_prep->fetchAll();
-		// Attention, si il n'y a pas de résultats, on renvoie false
+		//If there is no result, we return false
 		if (empty($tab))
 			return false;
 		return $tab[0];
 	}
 
+	/**
+	 * Delete a specific project/survey/user identified by $primary
+	 * 
+	 * @throws "Database error"
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function delete($primary){
 		$table_name=static::$object;
 		$primary_key=static::$primary;
@@ -80,15 +107,22 @@ class Model{
 			$req_prep->execute($values);
 		} catch (PDOException $e) {
 			if (Conf::getDebug()) {
-				echo $e->getMessage(); // affiche un message d'erreur
+				echo $e->getMessage(); //an error message
 			} else {
-				echo 'Une erreur est survenue <a href="./index.php"> retour a la page d\'accueil </a>';
+				echo 'An error occured <a href="./index.php">back to the homepage</a>';
 			}
 			return false;
 		}
 		return true;
 	}
 
+	/**
+	 * Saves a new project/survey/user in the database
+	 * 
+	 * @throws "Database error"
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function save($data){
 		$table_name=static::$object;
 		$sql= "INSERT INTO $table_name(";
@@ -106,13 +140,19 @@ class Model{
 			$req_prep->execute($data);
 		} catch (PDOException $e) {
 			if (Conf::getDebug()) {
-				echo $e->getMessage(); // affiche un message d'erreur
+				echo $e->getMessage(); // an error message
 			}
 			return false;
 		}
 		return true;
 	}
-
+	/**
+	 * Updates a specific project/survey/user
+	 * 
+	 * @throws "Database error"
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
 	public static function update($data){
 		$table_name=static::$object;
 		$primary_key=static::$primary;
@@ -129,7 +169,7 @@ class Model{
 			if (Conf::getDebug()) {
 				echo $e->getMessage(); // affiche un message d'erreur
 			} else {
-				echo 'Une erreur est survenue <a href="./index.php"> retour a la page d\'accueil </a>';
+				echo 'An error occured <a href="./index.php">back to the homepage</a>';
 			}
 			return false;
 		}
