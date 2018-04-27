@@ -88,10 +88,13 @@ class Answer {
 class Question {
 	constructor() {
 		this.numero=nbQuestion;
+		this.active=true;
+		this.title="";
 		nbQuestion++;
 		this.answers=[];
 		this.type=0;
-		this.display();
+		$("#questions").append(this.text())
+		this.eventActive()
 	}
 
 	addAnswer(remove=true){
@@ -102,30 +105,99 @@ class Question {
 		}
 	}
 
-	display(){
-		let text = '<div id="Q'+this.numero+'" class="question">'
-		text += '<div class="title">'
-		text += '<input type="text" placeholder="Question">'
-		text += '</div>'
-		text += '<select class="typeOfQuestion" name="'+this.numero+'">'
-		text += '<option value=0>Choose a type of question</option>'
-		$.each(typeOfQuestion, function(i,item){
-			text+= '<option value='+(i+1)+'>'+item.description+'</option>'
-		})
-		text += '</select>'
-		text += '<div id="inputQ'+this.numero+'"></div>'
-		text += '</div>'
-		$('#questions').append(text);
+	text(){
+		let text="";
 		let that=this;
-		$("#Q"+this.numero+" .typeOfQuestion").change(function(x){
-			that.changeTypeOfQuestion(x);
-		})
+		if(this.active){
+			text += '<div id="Q'+this.numero+'" class="question">'
+			text += '<div class="title">'
+			text += '<input type="text" placeholder="Question" value="'+this.title+'">'
+			text += '</div>'
+			text += '<select class="typeOfQuestion" name="'+this.numero+'">'
+			text += '<option value=0>Choose a type of question</option>'
+			$.each(typeOfQuestion, function(i,item){
+				let selected="";
+				if((i+1)==that.type) selected="selected"
+				text+= '<option value='+(i+1)+' '+selected+'>'+item.description+'</option>'
+			})
+			text += '</select>'
+			text += '<div id="inputQ'+this.numero+'">'
+			for(let i = 0 ; i<this.answers.length;i++){
+				text += this.answers[i].text()
+			}
+			switch(this.type) {
+				case 1:
+					text += '<textarea readonly placeholder="Response"></textarea>'
+					break;
+				case 2:
+					text += '<input type="number" value=0>'
+					break;
+				case 3:
+					text += '<input type="number" step="0.01" value=0>'
+					break;
+				case 4:
+					text += '<input type="date">'
+					break;
+				case 5:
+					text += '<input type="range" min="0" max="10">'
+					break;
+				case 7:
+					text+='<button class="addAnswer" type="button">Add an other answer</button><br>'
+					text+='<input type="radio"><input type="text" readonly placeholder="User answer">';					
+					break;
+				case 9:
+					text+='<button class="addAnswer" type="button">Add an other answer</button><br>'
+					text+='<input type="checkbox"><input type="text" readonly placeholder="User answer">';
+					break;
+			}
+			text += '</div>'
+			text += '<button type="button" class="validate"><i class="fa fa-check validate"></i></button>'
+			text += '</div>'
+		}else{
+			text += '<div id="Q'+this.numero+'" class="question">'
+			text += '<div class="title">'
+			text += this.title
+			text += '</div>'
+			text += '<div id="inputQ'+this.numero+'"></div>'
+			for(let i=0;i<this.answers.length;i++){
+				text += this.answers[i].text()
+			}
+			switch(this.type) {
+				case 1:
+					text += '<textarea readonly placeholder="Response"></textarea>'
+					break;
+				case 2:
+					text += '<input type="number" value=0>'
+					break;
+				case 3:
+					text += '<input type="number" step="0.01" value=0>'
+					break;
+				case 4:
+					text += '<input type="date">'
+					break;
+				case 5:
+					text += '<input type="range" min="0" max="10">'
+					break;
+				case 7:
+					text+='<input type="radio"><input type="text" readonly placeholder="User answer">';
+					break;
+				case 9:
+					text+='<input type="checkbox"><input type="text" readonly placeholder="User answer">';
+					break;
+			}
+			text += '</div>'
+		}
+		return text;
 	}
 
 	changeTypeOfQuestion(x){
-		this.answers=[];
 		let text;
+		this.answers=[];
 		this.type=parseInt(x.target.value);
+		for(let i=0;i<this.answers.length;i++){
+			this.answers[i]=null;
+		}
+		this.answers=[];
 		switch(this.type) {
 			case 1:
 				$("#inputQ"+this.numero).html('<textarea readonly placeholder="Response"></textarea>');
@@ -153,9 +225,10 @@ class Question {
 				$("#inputQ"+this.numero).empty();
 				this.addAnswer(false);
 				this.addAnswer(false);
-				$("#inputQ"+this.numero).append('<button class="addAnswer" type="button">Add an other answer</button><br>');
+				text='<button class="addAnswer" type="button">Add an other answer</button><br>'
+				text+='<input type="radio"><input type="text" readonly placeholder="User answer">';
+				$("#inputQ"+this.numero).append(text);
 				this.addEventAddAnwser();
-				new Answer('radio',this.numero,false,"readonly","User answer",false,false);
 				
 				break;
 			case 8:
@@ -169,9 +242,10 @@ class Question {
 				$("#inputQ"+this.numero).empty();
 				this.addAnswer(false);
 				this.addAnswer(false);
-				$("#inputQ"+this.numero).append('<button class="addAnswer" type="button">Add an other answer</button><br>');
+				text='<button class="addAnswer" type="button">Add an other answer</button><br>'
+				text+='<input type="checkbox"><input type="text" readonly placeholder="User answer">';
+				$("#inputQ"+this.numero).append(text);
 				this.addEventAddAnwser();
-				new Answer('checkbox',this.numero,false,"readonly","User answer",false,false);
 				break;
 			default:
 				$("#inputQ"+this.numero).empty();
@@ -183,6 +257,39 @@ class Question {
 		$("#Q"+this.numero+" .addAnswer").click(function(x){
 			that.addAnswer()
 		})
+	}
+	eventActive(){
+		let that=this;
+		$("#Q"+this.numero+" .title input").change(function(){
+			that.title=this.value;
+		})
+		$("#Q"+this.numero+" .typeOfQuestion").change(function(x){
+			that.changeTypeOfQuestion(x);
+		})
+		$("#Q"+this.numero+" .validate").click(function(x){
+			let bool=false;
+			for(let i=0;i<that.answers.length;i++){
+				bool=that.answers[i].active || bool;		
+			}
+			if(!bool && that.title!="" && that.type!=0){
+				that.active=!that.active;
+				$('#Q'+that.numero).replaceWith(that.text());
+				that.addEventToggle()
+			}
+		})
+
+		for(let i=0;i<this.answers.length;i++){
+			this.answers[i].eventdbClick();
+		}
+	}
+
+	addEventToggle(){
+		let that=this;
+		$("#Q"+this.numero).dblclick(function(){ 
+			that.active=!that.active;
+			$('#Q'+that.numero).replaceWith(that.text());
+			that.eventActive();
+		 })
 	}
 }
 
