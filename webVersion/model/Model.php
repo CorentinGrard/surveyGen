@@ -22,7 +22,7 @@ class Model{
 			die();
 		}
 	}
-	
+
 	public static function selectAll(){
 		$table_name=static::$object;
 		$class_name='Model'.ucfirst($table_name);
@@ -117,8 +117,8 @@ class Model{
 		$table_name=static::$object;
 		$primary_key=static::$primary;
 		$sql= "UPDATE $table_name SET";
-		foreach ($data as $cle => $valeur){
-			$sql .=" $cle=:$cle,";
+		foreach ($data as $key => $value){
+			$sql .=" $key=:$key,";
 		}
 		$sql=rtrim($sql,",");
 		$sql.=" WHERE $primary_key=:$primary_key";
@@ -127,9 +127,9 @@ class Model{
 			$req_prep->execute($data);
 		} catch (PDOException $e) {
 			if (Conf::getDebug()) {
-				echo $e->getMessage(); // affiche un message d'erreur
+				echo $e->getMessage(); // an error message
 			} else {
-				echo 'Une erreur est survenue <a href="./index.php"> retour a la page d\'accueil </a>';
+				echo 'An error occured <a href="./index.php">back to the homepage </a>';
 			}
 			return false;
 		}

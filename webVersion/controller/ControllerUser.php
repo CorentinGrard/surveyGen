@@ -10,10 +10,10 @@ class ControllerUser {
 
   	/**
 	 * Executes a default fonction when no action is specified in the URL
-	 * 
-	 * 
+	 *
+	 *
 	 * @author Corentin Grard <corentin.grard@gmail.com>
-	 */ 
+	 */
 	public static function default(){
         if(isset($_SESSION['email'])){
             ControllerDashboard::default();
@@ -28,12 +28,12 @@ class ControllerUser {
 	 * Initializes the session and redirects the user to correct page.
 	 * index.php if success
 	 * login.php if failure
-	 * 
+	 *
 	 * @throws "account isn't validated"
 	 * @throws "Email or password incorrect"
-	 * 
+	 *
 	 * @author Corentin Grard <corentin.grard@gmail.com>
-	 */ 
+	 */
     public static function connected(){
 	    if(Util::myGet('email')!='' && Util::myGet('password')!='' && ModelUsers::checkPassword(Util::myGet('email'),Security::encode(Util::myGet('password')))){
 			$u=ModelUsers::select(Util::myGet('email'));
@@ -57,7 +57,7 @@ class ControllerUser {
 	 * destroy the session
 	 * redirects to index.php
 	 * @author Corentin Grard <corentin.grard@gmail.com>
-	 */ 
+	 */
     public static function disconnect(){
     	session_destroy();
     	header('Location:index.php');
@@ -68,7 +68,7 @@ class ControllerUser {
 	 * Succeeds if the nonce if the nonce in the Email sent is equal to the nounce of the user $u in the database
 	 * @throws "Error validation account"
 	 * @author Corentin Grard <corentin.grard@gmail.com>
-	 */ 
+	 */
 	public static function validate(){
 		$u=ModelUsers::select(Util::myGet('email'));
 		if($u!=false && $u->get('nonce')==Util::myGet('nonce')){
@@ -90,15 +90,15 @@ class ControllerUser {
 			require (File::build_path(array ("view",static::$object,"login.php")));
 		}
 	}
-  
+
 	 /**
 	 * prepare the details of the user connected by interacting with ModelUsers
 	 * Transfer informations to a view via $u
-	 * 
+	 *
 	 * @throws "User not found"
-	 * 
+	 *
 	 * @author Esteban Legrand <esteban.legrand@outlook.fr>
-	 */ 
+	 */
     public static function read() {
 		$email = $_GET['email'];
 		$u = ModelUsers::select($email);
@@ -107,7 +107,7 @@ class ControllerUser {
 			$view=array("view", "dashboard", "dashboard.php");
 +           $pagetitle='SGS';
 			require(File::build_path(array ("view","view.php")));
-		}else{ 
+		}else{
 			$view=array("view", static::$object, "userDetails.php");
 			$pagetitle='Profile - SGS';
 			require(File::build_path(array ("view","view.php")));
@@ -116,9 +116,9 @@ class ControllerUser {
 
     /**
 	 * manages user creation form
-	 * 
+	 *
 	 * @author Corentin Grard <corentin.grard@gmail.com>
-	 */ 
+	 */
   	public static function create(){
 		$today = date('Y-m-d');
 		$postOrGet=Conf::getPostOrGet();
@@ -128,12 +128,12 @@ class ControllerUser {
 
   	 /**
 	 * manages conection of a user.
-	 * 
+	 *
 	 * @throws "Email error"
 	 * @throws "Password error"
-	 * 
+	 *
 	 * @author Corentin Grard <corentin.grard@gmail.com>
-	 */ 
+	 */
     public static function created(){
 			$email=Util::myGet('email');
 			if(filter_var(Util::myGet('email'),FILTER_VALIDATE_EMAIL)==false){
@@ -182,8 +182,8 @@ class ControllerUser {
 	    	header('Location:index.php');
 	    }else{
 	        $email=Util::myGet('email');
-	        $User = ModelUsers::select($email);
-	        if($User==false){
+	        $u = ModelUsers::select($email);
+	        if($u==false){
 	            $view=array("view", static::$object, "errorUser.php");
 	            $pagetitle='User not found';
 	            require(File::build_path(array ("view","view.php")));
@@ -195,48 +195,53 @@ class ControllerUser {
 	    	}
     }
 
-    public static function updated(){// TO DO
+
+		public static function updated(){
+			$u = ModelUsers::select($email);
+			$newEmail=Util::myGet('email');
+				ModelUsers::update(array(
+					"email" => $newEmail,
+					"idProfession" => $u -> $idprofession,
+					"name" => $u -> $name,
+					"lastName" => $u -> $lastname,
+		      "password"=>Security::encode($u -> $password),
+					"birthDate"=>$u -> $birthdate,
+					"nonce"=>$u -> $nonce
+				));
+		}
+    public static function updated2(){// TO DO
     	if(!isset($_SESSION['email'])){
-    		$view=array("view", static::$object, "connect.php");
+    			$view=array("view", static::$object, "querty.php");
 	        $pagetitle='Connexion';
 	        require(File::build_path(array ("view","view.php")));
-	    }else if(!Session::is_user(Util::myGet('email'))){
-	    	header('Location:index.php');
 	    }else{
-					if(filter_var(Util::myGet('email'),FILTER_VALIDATE_EMAIL)==false){
-						$view = array("view", static::$object, "errorEmail.php");
-						$pagetitle = 'Erreur Email';
-						require(File::build_path(array ("view","view.php")));
-					}
+					// if(filter_var(Util::myGet('email'),FILTER_VALIDATE_EMAIL)==false){
+					// 	$view = array("view", static::$object, "querty.php");
+					// 	$pagetitle = 'Erreur Email';
+					// 	require(File::build_path(array ("view","view.php")));
+					// }
 					$email=Util::myGet('email');
-	        if(ModelUsers::select($email)){
-	            $res=ModelUsers::update(array(
-								"email"=>$email,
-								"pass"=>Security::chiffrer(Util::myGet('pass')),
-								"pseudo"=>Util::myGet('pseudo'),
-								"email"=>Util::myGet('email'),
-								"sexe"=>Util::myGet('sexe'),
-								"profession"=>Util::myGet('profession'),
-	                ));
+	        if(!ModelUsers::select($email)){
+	            $res=ModelUsers::update(array("email"=>$email));
 	            if($res){
-									$email = $_GET['email'];
+									//$email = $_POST['email'];
 									$u = ModelUsers::select($email);
-									$email=htmlspecialchars($email);
-									$urlemail=rawurlencode($u->get('email'));
-									$up = "";
-									if(Session::is_user($email)){
-										$up = '<a href="?controller=User&action=update&email='.$urlemail.'">Cliquer ici pour mettre à jour votre profil</a> <br>  <a href="?controller=User&action=delete&email='.$urlemail.'">Cliquer ici pour supprimer votre profil</a>';
-									}
-	                $view = array("view", static::$object, "updated.php");
+									//$email=htmlspecialchars($email);
+									//$urlemail=rawurlencode($u->get('email'));
+									//$up = "";
+									// if(Session::is_user($email)){
+									// 	$up = '<a href="?controller=User&action=update&email='.$urlemail.'">Cliquer ici pour mettre à jour votre profil</a> <br>  <a href="?controller=User&action=delete&email='.$urlemail.'">Cliquer ici pour supprimer votre profil</a>';
+									// }
+	                $view = array("view", static::$object, "userDetails.php");
 	                $pagetitle = 'User mis à jour';
 	                require(File::build_path(array ("view","view.php")));
 	            }else{
-	                $view=array("view", static::$object, "errorUpdate.php");
+	                $view=array("view", static::$object, "index.php");
 	                $pagetitle='User non maj';
 	                require(File::build_path(array ("view","view.php")));
 	            }
 	        }else{
-	            $view=array("view", static::$object, "errorUser.php");
+	            $view=array("view", static::$object, "updateInfos.php");
 	            $pagetitle='User non trouvé';
 	            require(File::build_path(array ("view","view.php")));
 	        }
@@ -251,12 +256,12 @@ class ControllerUser {
 	      	$error="Error while deleting your profile, please try again.";
 	    }
 	}
-	
+
   	/**
 	 * Handles the case of password forgotten
-	 * 
+	 *
 	 * @author Corentin Grard <corentin.grard@gmail.com>
-	 */ 
+	 */
 	public static function forgotPassword(){
 		$postOrGet=Conf::getPostOrGet();
 		require(File::build_path(array ("view",static::$object,"forgot-password.php")));
@@ -278,13 +283,13 @@ class ControllerUser {
 
 
 	/**
-	 * Check if an user(email) exist in the database 
+	 * Check if an user(email) exist in the database
 	 *
 	 * @param String  $_POST['email] email that we need to check
-	 * 
+	 *
 	 * @author Corentin Grard <corentin.grard@gmail.com>
 	 * @return Boolean true is user exist, else false
-	 */ 
+	 */
 	public static function existUser(){
 		if(Util::myGet('email')!=NULL){
 			$u=ModelUsers::select(Util::myGet('email'));

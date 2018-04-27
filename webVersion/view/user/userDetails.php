@@ -18,4 +18,3 @@ require(File::build_path(array("view","head.php")));
             ?>
         </p>
     </div>
-
