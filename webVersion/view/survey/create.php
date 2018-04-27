@@ -13,7 +13,7 @@
   	</div>
   	<div class="form-group">
 		<label for="name_id">Name</label>
-		<input type="text" class="form-control w-25" id="name_id" aria-describedby="namelHelp" placeholder="Enter Name of the survey" name="name">
+		<input type="text" class="form-control w-25" id="name_id" aria-describedby="namelHelp" placeholder="Enter Name of the survey" name="name" autocomplete="off">
   	</div>
   	<div class="form-group">
 		<label for="description_id">Description</label>
