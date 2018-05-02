@@ -90,8 +90,7 @@ class ControllerSurvey {
 
 			//Creating the new database for the answers
 			// TO DO
-
-
+			ModelSurvey::createSurveyDatabase($newSurvey->get('id'));
 			//Creating the web page for the answers
 			//TO DO
 
