@@ -12,8 +12,19 @@ require(File::build_path(array("view","head.php")));
                 echo("<br>");
                 echo($u->get('birthdate'));
                 echo("<br>");
+
                 echo("<a href=\"?controller=user&action=update&email=".$u->get('email')."\">");
-                    echo("Edit Profile");
+                  echo("Edit Profile");
+                echo ("</a>");
+
+                echo("<br>");
+                echo("<br>");
+                echo("<br>");
+                echo("<br>");
+                echo("<br>");
+
+                echo("<a href=\"?controller=user&action=delete&email=".$u->get('email')."\">");
+                  echo("Delete Profile");
                 echo ("</a>");
             ?>
         </p>

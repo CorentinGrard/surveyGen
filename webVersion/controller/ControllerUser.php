@@ -204,48 +204,14 @@ class ControllerUser {
 					"oldEmail" => $oldEmail
 				));
 			$_SESSION["email"] = $newEmail;
+
+			$view=array("view", static::$object, "userDetails.php");
+			$pagetitle='Formulaire maj User';
+			require(File::build_path(array ("view","view.php")));
 	}
 
 
-    public static function updated2(){// TO DO
-    	if(!isset($_SESSION['email'])){
-    			$view=array("view", static::$object, "querty.php");
-	        $pagetitle='Connexion';
-	        require(File::build_path(array ("view","view.php")));
-	    }else{
-					// if(filter_var(Util::myGet('email'),FILTER_VALIDATE_EMAIL)==false){
-					// 	$view = array("view", static::$object, "querty.php");
-					// 	$pagetitle = 'Erreur Email';
-					// 	require(File::build_path(array ("view","view.php")));
-					// }
-					$email=Util::myGet('email');
-	        if(!ModelUsers::select($email)){
-	            $res=ModelUsers::update(array("email"=>$email));
-	            if($res){
-									//$email = $_POST['email'];
-									$u = ModelUsers::select($email);
-									//$email=htmlspecialchars($email);
-									//$urlemail=rawurlencode($u->get('email'));
-									//$up = "";
-									// if(Session::is_user($email)){
-									// 	$up = '<a href="?controller=User&action=update&email='.$urlemail.'">Cliquer ici pour mettre à jour votre profil</a> <br>  <a href="?controller=User&action=delete&email='.$urlemail.'">Cliquer ici pour supprimer votre profil</a>';
-									// }
-	                $view = array("view", static::$object, "userDetails.php");
-	                $pagetitle = 'User mis à jour';
-	                require(File::build_path(array ("view","view.php")));
-	            }else{
-	                $view=array("view", static::$object, "index.php");
-	                $pagetitle='User non maj';
-	                require(File::build_path(array ("view","view.php")));
-	            }
-	        }else{
-	            $view=array("view", static::$object, "updateInfos.php");
-	            $pagetitle='User non trouvé';
-	            require(File::build_path(array ("view","view.php")));
-	        }
-	    }
-	}
-
+  
 
     public static function delete(){
 	    if(ModelUsers::delete($_SESSION['email'])) {

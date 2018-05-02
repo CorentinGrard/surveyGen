@@ -114,7 +114,7 @@ require_once(File::build_path(array("model","ModelUsers.php")));
 					?>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+					<a class="nav-link" href="?controller=user&action=disconnect" data-toggle="modal" data-target="#exampleModal">
 						<i class="fa fa-fw fa-sign-out"></i>Logout</a>
 				</li>
 			</ul>
