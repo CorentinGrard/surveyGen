@@ -146,11 +146,6 @@ class Model{
 			return false;
 		}
 		$lastid=Model::$pdo->lastInsertId();
-		/*try{
-			$lastid=Model::$pdo->lastInsertId($table_name."_id_seq");
-		}finally{
-
-		}*/
 		return $class_name::select($lastid);
 	}
 	/**

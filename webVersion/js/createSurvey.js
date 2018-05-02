@@ -31,7 +31,12 @@ $(document).ready(function() {
 		$.post("?controller=survey&action=created",
 		{ json_string:data },
 		function(data){
-			$('#addQuestion').html(data)
+			let id=parseInt(data, 10);
+			if(isNaN(id)){
+				$('#error').html('<div class="alert alert-dismissible alert-danger"> <button type="button" class="close" data-dismiss="alert">&times;</button> <strong>Oh snap!</strong> '+data+'</div>')
+			}else{
+				window.location.replace("index.php?controller=survey&action=read&id="+id);
+			}
 		});
 	}
 })

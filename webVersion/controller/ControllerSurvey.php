@@ -40,50 +40,65 @@ class ControllerSurvey {
 		$survey=json_decode($_POST['json_string']);
 
 		//Control data
-		
-
-		//Saving the survey in the database
-		$newSurvey=ModelSurvey::save(array(
-			"projectId" => $survey->projectId,
-			"name" => $survey->name,
-			"description" => $survey->description,
-			"objective" => $survey->objective,
-			"startDate" => $survey->startDate,
-			"finalDate" => $survey->finalDate,
-			"dbName" => "todefine"//TO DO
-		));
-		foreach($survey->questions as $key => $question){
-			Util::aff(ModelQuestion::maxId($newSurvey->get('id')));
-			$newQuestion=ModelQuestion::save(array(
-				"id" => ModelQuestion::maxId($newSurvey->get('id')),
-				"idSurvey" => $newSurvey->get('id'),
-				"idType" => $question->type,
-				"title" => $question->title,
-				"description" => "todo",//TO DO
+		if(!((isset($survey->projectId) && is_int(intval($survey->projectId)) && ModelProject::select($survey->projectId)) &&  (isset($survey->name) && is_string($survey->name)) && (isset($survey->description) && is_string($survey->description)) && (isset($survey->objective) && is_string($survey->objective)) && (isset($survey->name) && is_string($survey->name)) && (isset($survey->startDate) && is_string($survey->startDate) && (DateTime::createFromFormat('Y-m-d', $survey->startDate) !== false)) && (isset($survey->finalDate) && is_string($survey->finalDate) && (DateTime::createFromFormat('Y-m-d', $survey->finalDate) !== false)))){
+			echo "Incorrect data, try again.";
+		}else{
+			
+			//Saving the survey in the database
+			$newSurvey=ModelSurvey::save(array(
+				"projectId" => $survey->projectId,
+				"name" => $survey->name,
+				"description" => $survey->description,
+				"objective" => $survey->objective,
+				"startDate" => $survey->startDate,
+				"finalDate" => $survey->finalDate,
+				"DBName" => "todefine"//TO DO
 			));
-			foreach($question->answers as $answer){
-				$description=strtolower($answer->description);
-				$newAnswer=ModelOption::selectByDescription($description);
-				if($newAnswer==false){
-					$newAnswer=ModelOption::save(array(
-						"description" => $description
+			if($newSurvey==false) $error= "Error while saving survey";
+			else{
+				foreach($survey->questions as $key => $question){
+					$newQuestion=ModelQuestion::save(array(
+						"id" => ModelQuestion::maxId($newSurvey->get('id'))+1,
+						"idSurvey" => $newSurvey->get('id'),
+						"idType" => $question->type,
+						"title" => $question->title,
+						"description" => "todo",//TO DO
 					));
+					if($newQuestion==false) $error= "Error while saving question";
+					else{
+						foreach($question->answers as $answer){
+							$description=strtolower($answer->description);
+							$newAnswer=ModelOption::selectByDescription($description);
+							if($newAnswer==false){
+								$newAnswer=ModelOption::save(array(
+									"description" => $description
+								));
+							}
+							if($newAnswer==false) $error= "Error while saving new option";
+							else{
+								$newQuestionOption=ModelQuestionOption::save(array(
+									"idOption" => $newAnswer->get('id'),
+									"idQuestion" => $question->get('id'),
+									"idSurvey" => $newSurvey->get('id'),
+								));
+								if($newQuestionOption==false) $error= "Error while saving option";
+							}
+						}
+					}
 				}
-				ModelQuestionOption::save(array(
-					"idOption" => $newAnswer->get('id'),
-					"idQuestion" => $question->get('id'),
-					"idSurvey" => $newSurvey->get('id'),
-				));
 			}
+
+			//Creating the new database for the answers
+			// TO DO
+
+
+			//Creating the web page for the answers
+			//TO DO
+
+			//If everything worked, return OK else return the error
+			if(isset($error)) echo $error;
+			else echo $newSurvey->get('id');
 		}
-
-		//Creating the new database for the answers
-		// TO DO
-
-
-		//Creating the web page for the answers
-		//TO DO
-
 	}
 
 	/**
@@ -99,8 +114,45 @@ class ControllerSurvey {
 			$tabS=array_merge($tabS,ModelSurvey::selectByProject($project->get('id')));
 		}
 		$view=array("view", static::$object, "list.php");
-		$pagetitle='Surveys SGS';
 		require (File::build_path(array ("view","view.php")));
+	}
+
+	/**
+	 * Display the detail of a survey
+	 * 
+	 * @author Corentin Grard <corentin.grard@gmail.com>
+	 */ 
+	public static function read(){
+		$id=Util::myGet('id');
+		$tabP=ModelProject::selectProjects($_SESSION['email']);
+		$survey=ModelSurvey::select($id);
+		if($survey!=false){
+			foreach($tabP as $project){
+				if($survey->get('projectid') == $project->get('id')){
+					$view=array("view", static::$object, "detail.php");
+					require (File::build_path(array ("view","view.php")));
+					exit;
+				}
+			}
+			$error="Survey non existant";
+			$tabP=ModelProject::selectProjects($_SESSION['email']);
+			$tabS=array();
+			foreach($tabP as $project){
+				$tabS=array_merge($tabS,ModelSurvey::selectByProject($project->get('id')));
+			}
+			$view=array("view", static::$object, "list.php");
+			require (File::build_path(array ("view","view.php")));
+		}else{
+			$error="Survey non existant";
+			$tabP=ModelProject::selectProjects($_SESSION['email']);
+			$tabS=array();
+			foreach($tabP as $project){
+				$tabS=array_merge($tabS,ModelSurvey::selectByProject($project->get('id')));
+			}
+			$view=array("view", static::$object, "list.php");
+			require (File::build_path(array ("view","view.php")));
+		}
+
 	}
 	 /**
 	 * Gets question type in the database
