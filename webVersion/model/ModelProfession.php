@@ -21,7 +21,7 @@ class ModelProfession extends Model{
      }
   }
   
-  ///constructeur
+  ///constructor
   public function __construct($id=NULL, $description=NULL){
     if (!is_null($id) && !is_null($description)){
         $this->id=$id;

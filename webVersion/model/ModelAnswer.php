@@ -7,7 +7,7 @@ class ModelAnswer extends Model{
 	static protected $object ='answer';
 	protected static $primary='id';
 
-	///constructeur
+	///constructor
 	public function __construct($id=NULL,$description=NULL){
 		if (!is_null($id) && !is_null($description)){
 			$this->id=$id;

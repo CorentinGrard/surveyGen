@@ -10,7 +10,7 @@ class ModelQuestion extends Model{
 	static protected $object ='question';
 	protected static $primary=array('id','idSurvey');
 
-	///constructeur
+	///constructor
 	public function __construct($id=NULL, $idSurvey=NULL, $idType=NULL,$description=NULL,$title=NULL, $startDate=NULL, $finalDate=NULL, $DBnName=NULL){
 		if (!is_null($id) && !is_null($idSurvey) && !is_null($idType) && !is_null($description) && !is_null($title)){
 			$this->id=$id;

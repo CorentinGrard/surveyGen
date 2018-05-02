@@ -36,7 +36,7 @@
 		<button id="addQuestion" type="button"><i class="fa fa-plus-circle"></i> Add a question</button>
 		<br>
 		<br>
-  	<button class="btn btn-primary">Create survey</button>
+  	<button id="sendData" class="btn btn-primary" type="button">Create survey</button>
 </form>
 
 <script src="./js/classSurvey.js" defer></script>
