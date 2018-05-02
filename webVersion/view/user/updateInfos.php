@@ -2,13 +2,12 @@
 require(File::build_path(array("view","head.php")));
 ?>
 
-<h1> Edit your profile</h1
+<h1> Edit your profile</h1>
 
-<form action="updated.php" method="post">
-Current e-mail : <?php echo $User->get('email')?>;
-<br>
-<br>
-New e-mail: <input type="text" name="email">
+<form method="<?php echo $postOrGet; ?>" action="index.php">
+<input type='hidden' name='controller' value='user'>
+<input type='hidden' name='action' value='updated'>
+<input type="text" name="email" value=<?php echo $u->get('email');?>>
 <br>
 <br>
 <input type="submit">

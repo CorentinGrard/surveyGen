@@ -157,8 +157,8 @@ class Model{
 		$table_name=static::$object;
 		$primary_key=static::$primary;
 		$sql= "UPDATE $table_name SET";
-		foreach ($data as $cle => $valeur){
-			$sql .=" $cle=:$cle,";
+		foreach ($data as $key => $value){
+			$sql .=" $key=:$key,";
 		}
 		$sql=rtrim($sql,",");
 		$sql.=" WHERE $primary_key=:$primary_key";
@@ -167,9 +167,9 @@ class Model{
 			$req_prep->execute($data);
 		} catch (PDOException $e) {
 			if (Conf::getDebug()) {
-				echo $e->getMessage(); // affiche un message d'erreur
+				echo $e->getMessage(); // an error message
 			} else {
-				echo 'An error occured <a href="./index.php">back to the homepage</a>';
+				echo 'An error occured <a href="./index.php">back to the homepage </a>';
 			}
 			return false;
 		}

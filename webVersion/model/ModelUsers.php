@@ -12,6 +12,26 @@ class ModelUsers extends Model{
 	static protected $object ='Users';
 	protected static $primary='email';
 
+
+	public static function update($data){
+		$sql = "UPDATE users SET email=:tag WHERE email=:tag2";
+		$req_prep = Model::$pdo->prepare($sql);
+    	$values = array(
+		"tag" => $data["newEmail"],
+		"tag2" => $data["oldEmail"]
+		);
+		$req_prep->execute($values);
+	}
+
+	// public static function update($data){
+	// 	$sql= "UPDATE users SET";
+	// 	foreach ($data as $key => $value){
+	// 		$sql .=" $key=:$key,";
+	// 	}
+	// 	$sql=rtrim($sql,",");
+	// 	$sql.=" WHERE $primary_key=:$primary_key";
+	// 	$req_prep=Model::$pdo->prepare($sql);
+	// }
 	public static function checkPassword($email,$password){
 		$u=ModelUsers::select($email);
 		if(!$u==false && $u->get('email')==$email && $u->get('password')==$password){
@@ -46,5 +66,7 @@ class ModelUsers extends Model{
 				$this->nonce=$nonce;
 		}
 	}
+
+
 }
 ?>
