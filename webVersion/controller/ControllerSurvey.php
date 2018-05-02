@@ -3,7 +3,8 @@ require_once (File::build_path(array ("model","Model.php")));
 require_once (File::build_path(array ("model","ModelSurvey.php")));
 require_once (File::build_path(array ("model","ModelProject.php")));
 require_once (File::build_path(array ("model","ModelQuestion.php")));
-require_once (File::build_path(array ("model","ModelAnswer.php")));
+require_once (File::build_path(array ("model","ModelQuestionOption.php")));
+require_once (File::build_path(array ("model","ModelOption.php")));
 require_once (File::build_path(array ("model","ModelTypeOfQuestion.php")));
 require_once (File::build_path(array ("lib","Util.php")));
 require_once (File::build_path(array ("lib","Security.php")));
@@ -34,29 +35,55 @@ class ControllerSurvey {
 	 * @author Corentin Grard <corentin.grard@gmail.com>
  	*/
 	public static function created(){
+
+		//Get the data from the form
 		$survey=json_decode($_POST['json_string']);
-		Util::aff($json);
-		ModelSurvey::save(array( //maybe return the object for saving the question after
-			"projectId" => $survey.projectId,
-			"name" => $survey.name,
-			"description" => $survey.descripion,
-			"objective" => $survey.objective,
-			"startDate" => $survey.startDate,
-			"finalDate" => $survey.finalDate,
+
+		//Control data
+		
+
+		//Saving the survey in the database
+		$newSurvey=ModelSurvey::save(array(
+			"projectId" => $survey->projectId,
+			"name" => $survey->name,
+			"description" => $survey->description,
+			"objective" => $survey->objective,
+			"startDate" => $survey->startDate,
+			"finalDate" => $survey->finalDate,
+			"dbName" => "todefine"//TO DO
 		));
-		foreach($survey.questions as $key => $question){
-			ModelQuestion::save(array(
-				"idSurvey" => $idSurvey,
-				"idType" => $question.type,
-				"title" => $question.title,
-				"description" => $question.description,
+		foreach($survey->questions as $key => $question){
+			Util::aff(ModelQuestion::maxId($newSurvey->get('id')));
+			$newQuestion=ModelQuestion::save(array(
+				"id" => ModelQuestion::maxId($newSurvey->get('id')),
+				"idSurvey" => $newSurvey->get('id'),
+				"idType" => $question->type,
+				"title" => $question->title,
+				"description" => "todo",//TO DO
 			));
-			foreach($question.answers as $answer){
-				ModelAnswer::save(array(
-					"description" => $answer.description,
+			foreach($question->answers as $answer){
+				$description=strtolower($answer->description);
+				$newAnswer=ModelOption::selectByDescription($description);
+				if($newAnswer==false){
+					$newAnswer=ModelOption::save(array(
+						"description" => $description
+					));
+				}
+				ModelQuestionOption::save(array(
+					"idOption" => $newAnswer->get('id'),
+					"idQuestion" => $question->get('id'),
+					"idSurvey" => $newSurvey->get('id'),
 				));
 			}
 		}
+
+		//Creating the new database for the answers
+		// TO DO
+
+
+		//Creating the web page for the answers
+		//TO DO
+
 	}
 
 	/**

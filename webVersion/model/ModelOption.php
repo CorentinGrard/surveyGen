@@ -1,23 +1,20 @@
 <?php
-class ModelQuestion extends Model{
+class ModelOption extends Model{
 
 	private $id;
-	private $idSurvey;
-	private $idType;
-	private $title;
 	private $description;
 
-	static protected $object ='question';
+	static protected $object ='option';
 	protected static $primary='id';
 
-	public static function maxId($primary_value){
+	public static function selectByDescription($description){
 		$table_name=static::$object;
 		$class_name='Model'.ucfirst($table_name);
 		$primary_key=static::$primary;
-		$sql = "SELECT MAX('id') FROM $table_name WHERE $primary_key=:primary_v";
+		$sql = "SELECT * from $table_name WHERE description=:primary_v";
 		$req_prep = Model::$pdo->prepare($sql);
 		$values = array(
-			"primary_v" => $primary_value,
+			"primary_v" => $description,
 		);
 		try{
 			$req_prep->execute($values);
@@ -30,22 +27,18 @@ class ModelQuestion extends Model{
 			die();
 		}
 		//We get the results in a table
-		$req_prep->setFetchMode(PDO::FETCH_ASSOC);
+		$req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
 		$tab = $req_prep->fetchAll();
 		//If there is no result, we return false
-		if (empty($tab['max']))
-			return 0;
+		if (empty($tab)) return false;
 		return $tab[0];
 	}
 
 	///constructor
-	public function __construct($id=NULL, $idSurvey=NULL, $idType=NULL,$description=NULL,$title=NULL, $startDate=NULL, $finalDate=NULL, $DBnName=NULL){
-		if (!is_null($id) && !is_null($idSurvey) && !is_null($idType) && !is_null($description) && !is_null($title)){
+	public function __construct($id=NULL,$description=NULL){
+		if (!is_null($id) && !is_null($description)){
 			$this->id=$id;
-			$this->idSurvey=$idSurvey;
-			$this->idType=$idType;
 			$this->description=$description;
-			$this->title=$title;
 		}
 	}
 }

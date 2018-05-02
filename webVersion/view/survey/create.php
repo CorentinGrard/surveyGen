@@ -13,11 +13,11 @@
   	</div>
   	<div class="form-group">
 		<label for="name_id">Name</label>
-		<input type="text" class="form-control w-25" id="name_id" aria-describedby="namelHelp" placeholder="Enter Name of the survey" name="name" autocomplete="off">
+		<input type="text" class="form-control w-25" id="name_id" aria-describedby="namelHelp" placeholder="Enter Name of the survey" name="name" autocomplete="off" required>
   	</div>
   	<div class="form-group">
 		<label for="description_id">Description</label>
-		<textarea class="form-control" rows="5" id="description_id" name="description"></textarea>
+		<textarea class="form-control" rows="5" id="description_id" name="description" required></textarea>
   	</div>
     <div class="form-group">
 		<label for="objective_id">Objective</label>
@@ -25,11 +25,11 @@
   	</div>
     <div class="form-group">
 		<label for="sDate_id">Start date</label>
-		<input type="date" class="form-control w-25" id="sDate_id" name="sDate" min=<?php echo $today;?>>
+		<input type="date" class="form-control w-25" id="sDate_id" name="sDate" min=<?php echo $today;?> required>
   	</div>
     <div class="form-group">
 		<label for="eDate_id">End date</label>
-		<input type="date" class="form-control w-25" id="eDate_id" name="eDate" min=<?php echo $today;?>>
+		<input type="date" class="form-control w-25" id="eDate_id" name="eDate" min=<?php echo $today;?> required>
   	</div>
 		<div id="questions">
 		</div>

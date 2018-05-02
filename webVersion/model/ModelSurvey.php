@@ -37,6 +37,20 @@ class ModelSurvey extends Model{
 		return $rep->fetchAll();
 	}
 
+	//getter
+	public function get($attribut) {
+		if (property_exists($this, $attribut)) {
+			return $this->$attribut;
+		}
+	}
+
+	//setter
+	public function set($attribut,$valeur) {
+		if (property_exists($this, $attribut)) {
+			$this->$attribut=$valeur;
+	 	}
+	}
+
 	///constructor
 	public function __construct($id=NULL, $idProject=NULL, $name=NULL,$description=NULL,$objective=NULL, $startDate=NULL, $finalDate=NULL, $DBnName=NULL){
 		if (!is_null($id) && !is_null($idProject) && !is_null($name) && !is_null($description) && !is_null($objective) && !is_null($startDate) &&!is_null($finalDate)&&!is_null($DBnName)){

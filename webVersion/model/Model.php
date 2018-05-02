@@ -43,7 +43,7 @@ class Model{
 			$rep=Model::$pdo->query("SELECT * FROM $table_name");
 		} catch (PDOException $e) {
 			if (Conf::getDebug()) {
-			echo $e->getMessage(); an error message
+			echo $e->getMessage(); //an error message
 			} else {
 			echo 'An error occured <a href="./index.php">back to the home page</a>';
 			}
@@ -125,6 +125,7 @@ class Model{
 	 */ 
 	public static function save($data){
 		$table_name=static::$object;
+		$class_name='Model'.ucfirst($table_name);
 		$sql= "INSERT INTO $table_name(";
 		foreach ($data as $cle => $valeur){
 			$sql .=" $cle,";
@@ -144,7 +145,13 @@ class Model{
 			}
 			return false;
 		}
-		return true;
+		$lastid=Model::$pdo->lastInsertId();
+		/*try{
+			$lastid=Model::$pdo->lastInsertId($table_name."_id_seq");
+		}finally{
+
+		}*/
+		return $class_name::select($lastid);
 	}
 	/**
 	 * Updates a specific project/survey/user
