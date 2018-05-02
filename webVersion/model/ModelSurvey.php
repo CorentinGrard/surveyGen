@@ -50,7 +50,11 @@ class ModelSurvey extends Model{
 			$this->$attribut=$valeur;
 	 	}
 	}
-
+	
+	public static function createSurveyDatabase($newSurveyId) {
+		$table_name = "survey_".$newSurveyId;
+		$sql = "CREATE DATABASE $table_name TEMPLATE finalDatabase";
+	}
 	///constructor
 	public function __construct($id=NULL, $idProject=NULL, $name=NULL,$description=NULL,$objective=NULL, $startDate=NULL, $finalDate=NULL, $DBnName=NULL){
 		if (!is_null($id) && !is_null($idProject) && !is_null($name) && !is_null($description) && !is_null($objective) && !is_null($startDate) &&!is_null($finalDate)&&!is_null($DBnName)){

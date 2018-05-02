@@ -29,6 +29,47 @@ class ControllerSurvey {
 		require (File::build_path(array ("view","view.php")));
 	}
 
+	private static function blockQuestionHTML($name,$label, $type, $description, $idQuestion){
+		$block = "<div>\n";
+		if ($type == "free"){
+			$block += "<label for=\"Q$idQuestion\">$label</label>\n
+			<input id=\"Q$idQuestion\" type=\"text\" name=\"$name\" aria-describedby=\"datelHelp\">\n
+			</div>\n"
+			return $block; 
+		}
+		if (type == option) {
+			$options=ModelOptions::selectA();
+			foreach ()
+		}
+	}
+	private static function createHTMLSurvey($survey){
+		$label = "<h1>$survey->name</h1>";
+
+		foreach($survey->questions as $key => $question){
+			Util::aff(ModelQuestion::maxId($newSurvey->get('id')));
+			$newQuestion=ModelQuestion::save(array(
+				"id" => ModelQuestion::maxId($newSurvey->get('id')),
+				"idSurvey" => $newSurvey->get('id'),
+				"idType" => $question->type,
+				"title" => $question->title,
+				"description" => $question->description//TO DO
+			));
+			foreach($question->answers as $answer){
+				$description=strtolower($answer->description);
+				$newAnswer=ModelOption::selectByDescription($description);
+				if($newAnswer==false){
+					$newAnswer=ModelOption::save(array(
+						"description" => $description
+					));
+				}
+				ModelQuestionOption::save(array(
+					"idOption" => $newAnswer->get('id'),
+					"idQuestion" => $question->get('id'),
+					"idSurvey" => $newSurvey->get('id'),
+				));
+			}
+		}
+	}
 	/**
  	 * Save the form's result into the database, create the new database, create a webpage for the answers
 	 * 
@@ -50,8 +91,8 @@ class ControllerSurvey {
 			"objective" => $survey->objective,
 			"startDate" => $survey->startDate,
 			"finalDate" => $survey->finalDate,
-			"dbName" => "todefine"//TO DO
 		));
+
 		foreach($survey->questions as $key => $question){
 			Util::aff(ModelQuestion::maxId($newSurvey->get('id')));
 			$newQuestion=ModelQuestion::save(array(
@@ -59,7 +100,7 @@ class ControllerSurvey {
 				"idSurvey" => $newSurvey->get('id'),
 				"idType" => $question->type,
 				"title" => $question->title,
-				"description" => "todo",//TO DO
+				"description" => $question->description//TO DO
 			));
 			foreach($question->answers as $answer){
 				$description=strtolower($answer->description);
@@ -78,7 +119,8 @@ class ControllerSurvey {
 		}
 
 		//Creating the new database for the answers
-		// TO DO
+		// TO CHECK
+		ModelSurvey::createSurveyDatabase($newSurvey->get("id"));
 
 
 		//Creating the web page for the answers
