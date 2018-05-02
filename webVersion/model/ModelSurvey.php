@@ -51,6 +51,23 @@ class ModelSurvey extends Model{
 	 	}
 	}
 
+	public static function createSurveyDatabase($newSurveyId) {
+		$table_name = "survey_".$newSurveyId;
+		$sql = "CREATE DATABASE $table_name WITH TEMPLATE=\"finalDatabase\"";
+		$req_prep=Model::$pdo->prepare($sql);
+		try{
+			$req_prep->execute($data);
+		} catch (PDOException $e) {
+			if (Conf::getDebug()) {
+				echo $e->getMessage(); // an error message
+			} else {
+				echo 'An error occured <a href="./index.php">back to the homepage </a>';
+			}
+			return false;
+		}
+		return true;
+	}
+
 	///constructor
 	public function __construct($id=NULL, $projectid=NULL, $name=NULL,$description=NULL,$objective=NULL, $startdate=NULL, $finaldate=NULL, $dbname=NULL){
 		if (!is_null($id) && !is_null($projectid) && !is_null($name) && !is_null($description) && !is_null($objective) && !is_null($startdate) &&!is_null($finaldate)&&!is_null($dbname)){
