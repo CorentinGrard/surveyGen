@@ -4,7 +4,7 @@ require_once (File::build_path(array ("model","ModelSurvey.php")));
 require_once (File::build_path(array ("model","ModelProject.php")));
 require_once (File::build_path(array ("model","ModelQuestion.php")));
 require_once (File::build_path(array ("model","ModelQuestionOption.php")));
-require_once (File::build_path(array ("model","ModelOption.php")));
+require_once (File::build_path(array ("model","ModelOptions.php")));
 require_once (File::build_path(array ("model","ModelTypeOfQuestion.php")));
 require_once (File::build_path(array ("lib","Util.php")));
 require_once (File::build_path(array ("lib","Security.php")));
@@ -68,18 +68,18 @@ class ControllerSurvey {
 					else{
 						foreach($question->answers as $answer){
 							$description=strtolower($answer->description);
-							$newAnswer=ModelOption::selectByDescription($description);
+							$newAnswer=ModelOptions::selectByDescription($description);
 							if($newAnswer==false){
-								$newAnswer=ModelOption::save(array(
+								$newAnswer=ModelOptions::save(array(
 									"description" => $description
 								));
 							}
 							if($newAnswer==false) $error= "Error while saving new option";
 							else{
 								$newQuestionOption=ModelQuestionOption::save(array(
-									"idOption" => $newAnswer->get('id'),
-									"idQuestion" => $question->get('id'),
-									"idSurvey" => $newSurvey->get('id'),
+									"idoption" => $newAnswer->get('id'),
+									"idquestion" => $newQuestion->get('id'),
+									"idsurvey" => $newSurvey->get('id'),
 								));
 								if($newQuestionOption==false) $error= "Error while saving option";
 							}

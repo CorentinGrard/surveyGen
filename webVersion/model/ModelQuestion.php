@@ -92,7 +92,20 @@ class ModelQuestion extends Model{
 		return $tab[0];
 	}
 
+	//getter
+	public function get($attribut) {
+		if (property_exists($this, $attribut)) {
+			return $this->$attribut;
+		}
+	}
 
+	//setter
+	public function set($attribut,$valeur) {
+		if (property_exists($this, $attribut)) {
+			$this->$attribut=$valeur;
+	 	}
+	}
+	
 	///constructor
 	public function __construct($id=NULL, $idsurvey=NULL, $idtype=NULL,$description=NULL,$title=NULL, $startDate=NULL, $finalDate=NULL, $DBnName=NULL){
 		if (!is_null($id) && !is_null($idsurvey) && !is_null($idtype) && !is_null($description) && !is_null($title)){

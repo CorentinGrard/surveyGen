@@ -1,10 +1,10 @@
 <?php
-class ModelOption extends Model{
+class ModelOptions extends Model{
 
 	private $id;
 	private $description;
 
-	static protected $object ='option';
+	static protected $object ='options';
 	protected static $primary='id';
 
 	public static function selectByDescription($description){
@@ -32,6 +32,20 @@ class ModelOption extends Model{
 		//If there is no result, we return false
 		if (empty($tab)) return false;
 		return $tab[0];
+	}
+
+	//getter
+	public function get($attribut) {
+		if (property_exists($this, $attribut)) {
+			return $this->$attribut;
+		}
+	}
+
+	//setter
+	public function set($attribut,$valeur) {
+		if (property_exists($this, $attribut)) {
+			$this->$attribut=$valeur;
+	 	}
 	}
 
 	///constructor
