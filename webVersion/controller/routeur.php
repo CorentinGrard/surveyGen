@@ -1,6 +1,7 @@
 <?php
 require_once (File::build_path(array ("controller","ControllerUser.php")));
 require_once (File::build_path(array ("controller","ControllerProject.php")));
+require_once (File::build_path(array ("controller","ControllerAnswer.php")));
 require_once (File::build_path(array ("controller","ControllerSurvey.php")));
 require_once (File::build_path(array ("controller","ControllerDashboard.php")));
 require_once (File::build_path(array ("controller","Controller.php")));
