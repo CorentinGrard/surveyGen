@@ -56,7 +56,7 @@ class ModelSurvey extends Model{
 		$sql = "CREATE DATABASE $table_name WITH TEMPLATE=\"finalDatabase\"";
 		$req_prep=Model::$pdo->prepare($sql);
 		try{
-			$req_prep->execute($data);
+			$req_prep->execute();
 		} catch (PDOException $e) {
 			if (Conf::getDebug()) {
 				echo $e->getMessage(); // an error message

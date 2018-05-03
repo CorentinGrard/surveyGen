@@ -26,7 +26,7 @@
     <div class="form-group">
 		<label for="sDate_id">Start date</label>
 		<input type="date" class="form-control w-25" id="sDate_id" name="sDate" min=<?php echo $today;?> required>
-  	</div>
+  	</div>			
     <div class="form-group">
 		<label for="eDate_id">End date</label>
 		<input type="date" class="form-control w-25" id="eDate_id" name="eDate" min=<?php echo $today;?> required>
@@ -36,7 +36,7 @@
 		<button id="addQuestion" type="button"><i class="fa fa-plus-circle"></i> Add a question</button>
 		<br>
 		<br>
-  	<button id="sendData" class="btn btn-primary" type="button">Create survey</button>
+  	<button id="sendData" class="btn btn-primary" type="button"><i class="fa fa-spinner fa-spin"></i><span>Create survey</span></button>
 </form>
 
 <script src="./js/classSurvey.js" defer></script>

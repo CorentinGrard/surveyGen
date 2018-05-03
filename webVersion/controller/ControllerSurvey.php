@@ -29,11 +29,11 @@ class ControllerSurvey {
 		require (File::build_path(array ("view","view.php")));
 	}
 
-	private static function generateQuestionHTMLBlock($questionId, $questionTitle, $questionType, $questionDescription, $questionAnswers) {
+	/*private static function generateQuestionHTMLBlock($questionId, $questionTitle, $questionType, $questionDescription, $questionAnswers) {
 		$block = "<div>\n";
 		$block += "<label for=\"$idQuestion\">$questionTitle</label>\n";
 		if ($type == "free") {
-			<input id=\"Q$idQuestion\" type=\"text\" name=\"$name\" aria-describedby=\"datelHelp\">\n";
+			//<input id=\"Q$idQuestion\" type=\"text\" name=\"$name\" aria-describedby=\"datelHelp\">\n";
 			return $block;
 		}
 		else if (type == "option") {
@@ -55,7 +55,8 @@ class ControllerSurvey {
 			generateQuestionHTMLBlock($question->id, $question->title, $question->type, $question->description, $question->answers);
 		}
 		$formHTML += "</form>";
-	}
+	}*/
+	
 	/**
  	 * Save the form's result into the database, create the new database, create a webpage for the answers
 	 * 
@@ -124,6 +125,7 @@ class ControllerSurvey {
 			//If everything worked, return OK else return the error
 			if(isset($error)) echo $error;
 			else echo $newSurvey->get('id');
+
 		}
 	}
 
