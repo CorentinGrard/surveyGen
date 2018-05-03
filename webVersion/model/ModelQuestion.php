@@ -92,6 +92,31 @@ class ModelQuestion extends Model{
 		return $tab[0];
 	}
 
+	public static function selectByIdSurvey($idSurvey){
+		$table_name=static::$object;
+		$class_name='Model'.ucfirst($table_name);
+		$primary_key_2=static::$primary[1];
+		$sql = "SELECT * from $table_name WHERE $primary_key_1=:idSurvey";
+		$req_prep = Model::$pdo->prepare($sql);
+		try{
+			$req_prep->execute($idSurvey);
+		} catch (PDOException $e) {
+			if (Conf::getDebug()) {
+			echo $e->getMessage(); // an error message
+			} else {
+				echo 'An error occured <a href="./index.php">back to the homepage</a>';
+			}
+			die();
+		}
+		//We get the results in a table
+		$req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
+		$tab = $req_prep->fetchAll();
+		//If there is no result, we return false
+		if (empty($tab))
+			return false;
+		return $tab[0];
+	}
+
 	//getter
 	public function get($attribut) {
 		if (property_exists($this, $attribut)) {

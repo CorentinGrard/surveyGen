@@ -60,6 +60,32 @@ class ModelQuestionOption extends Model{
 		return $tab[0];
 	}
 
+	public static function selectByQuestion($data){
+		$table_name=static::$object;
+		$class_name='Model'.ucfirst($table_name);
+		$primary_key_1=static::$primary[1];
+		$primary_key_2=static::$primary[2];
+		$sql = "SELECT * from $table_name WHERE $primary_key_1=:idquestion AND $primary_key_2=:idsurvey";
+		$req_prep = Model::$pdo->prepare($sql);
+		try{
+			$req_prep->execute($data);
+		} catch (PDOException $e) {
+			if (Conf::getDebug()) {
+			echo $e->getMessage(); // an error message
+			} else {
+				echo 'An error occured <a href="./index.php">back to the homepage</a>';
+			}
+			die();
+		}
+		//We get the results in a table
+		$req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
+		$tab = $req_prep->fetchAll();
+		//If there is no result, we return false
+		if (empty($tab))
+			return false;
+		return $tab[0];
+	}
+
 	///constructor
 	public function __construct($idoption=NULL,$idquestion=NULL, $idsurvey=NULL){
 		if (!is_null($idoption) && !is_null($idquestion) && !is_null($idsurvey)){

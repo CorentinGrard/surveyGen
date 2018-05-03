@@ -48,7 +48,8 @@ class ControllerSurvey {
 		}
 		$block += "</div>\n";
 		return $block;
-	}
+	}*/
+	/*
 	private static function generateAnswerForm($questionsTab){
 		$formHTML = "<form>\n";
 		foreach($questionsTab as $key => $question){
@@ -61,7 +62,18 @@ class ControllerSurvey {
  	 * Save the form's result into the database, create the new database, create a webpage for the answers
 	 * 
 	 * @author Corentin Grard <corentin.grard@gmail.com>
- 	*/
+	 */
+	 public static  function createForm(){
+		 $idSurvey=$_GET['idSurvey'];
+
+		 $questions = ModelQuestion::selectByIdSurvey($idSurvey);
+		 $questions_options = array();
+		 foreach($questions as $key => $question){
+			 $question_options[$question->get('id')] = ModelQuestionOption::selectByQuestion(array($question->get('id'), $question->get('idSurvey'));
+		 }
+		 $view=array("view", "answerForm.php");
+		 require (File::build_path(array ("view","view.php")));
+	 }
 	public static function created(){
 
 		//Get the data from the form
