@@ -29,7 +29,7 @@ class ControllerSurvey {
 		require (File::build_path(array ("view","view.php")));
 	}
 
-	private static function generateQuestionHTMLBlock($questionId, $questionTitle, $questionType, $questionDescription, $questionAnswers) {
+	/*private static function generateQuestionHTMLBlock($questionId, $questionTitle, $questionType, $questionDescription, $questionAnswers) {
 		$block = "<div>\n";
 		$block += "<label for=\"$idQuestion\">$questionTitle</label>\n";
 		if ($type == "free") {
@@ -48,19 +48,33 @@ class ControllerSurvey {
 		}
 		$block += "</div>\n";
 		return $block;
-	}
+	}*/
+	/*
 	private static function generateAnswerForm($questionsTab){
 		$formHTML = "<form>\n";
 		foreach($questionsTab as $key => $question){
 			generateQuestionHTMLBlock($question->id, $question->title, $question->type, $question->description, $question->answers);
 		}
 		$formHTML += "</form>";
-	}
+	}*/
+
+
 	/**
  	 * Save the form's result into the database, create the new database, create a webpage for the answers
 	 * 
 	 * @author Corentin Grard <corentin.grard@gmail.com>
- 	*/
+	 */
+	 public static  function createForm(){
+		 $idSurvey=$_GET['idSurvey'];
+
+		 $questions = ModelQuestion::selectByIdSurvey($idSurvey);
+		 $questions_options = array();
+		 foreach($questions as $key => $question){
+			 $question_options[$question->get('id')] = ModelQuestionOption::selectByQuestion(array($question->get('id'), $question->get('idSurvey'));
+		 }
+		 $view=array("view", "answerForm.php");
+		 require (File::build_path(array ("view","view.php")));
+	 }
 	public static function created(){
 
 		//Get the data from the form
