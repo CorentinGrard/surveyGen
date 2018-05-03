@@ -29,6 +29,33 @@ class ControllerSurvey {
 		require (File::build_path(array ("view","view.php")));
 	}
 
+	private static function generateQuestionHTMLBlock($questionId, $questionTitle, $questionType, $questionDescription, $questionAnswers) {
+		$block = "<div>\n";
+		$block += "<label for=\"$idQuestion\">$questionTitle</label>\n";
+		if ($type == "free") {
+			<input id=\"Q$idQuestion\" type=\"text\" name=\"$name\" aria-describedby=\"datelHelp\">\n";
+			return $block;
+		}
+		else if (type == "option") {
+			foreach($questionAnswers as $key => $answer){
+				$block += "<input type=\"radio\" name=\"$questionId\" value=\"$answer\"><br>\n";
+			}
+		}
+		else if (type == "multiOption"){
+			foreach($questionAnswers as $key => $answer){
+				$block += "<input type=\"checkbox\" name=\"$questionId\" value=\"$answer\"><br>\n";
+			}
+		}
+		$block += "</div>\n";
+		return $block;
+	}
+	private static function generateAnswerForm($questionsTab){
+		$formHTML = "<form>\n";
+		foreach($questionsTab as $key => $question){
+			generateQuestionHTMLBlock($question->id, $question->title, $question->type, $question->description, $question->answers);
+		}
+		$formHTML += "</form>";
+	}
 	/**
  	 * Save the form's result into the database, create the new database, create a webpage for the answers
 	 * 
@@ -52,7 +79,7 @@ class ControllerSurvey {
 				"objective" => $survey->objective,
 				"startDate" => $survey->startDate,
 				"finalDate" => $survey->finalDate,
-				"DBName" => "todefine"//TO DO
+				"DBname" => "todefine"//TO DO
 			));
 			if($newSurvey==false) $error= "Error while saving survey";
 			else{
@@ -89,7 +116,7 @@ class ControllerSurvey {
 			}
 
 			//Creating the new database for the answers
-			// TO DO
+			// TO CHECK
 			ModelSurvey::createSurveyDatabase($newSurvey->get('id'));
 			//Creating the web page for the answers
 			//TO DO
