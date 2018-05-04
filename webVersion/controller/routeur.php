@@ -20,7 +20,7 @@ if(class_exists($controller_class)){
 		$action = 'default';
 	}
 	if(in_array($action, get_class_methods($controller_class))){
-		if((!isset($_SESSION['email']) && !($controller_class=="ControllerUser" && in_array($action,$unlogUserAction))) || (isset($_SESSION['email']) && $controller_class=="ControllerUser" && in_array($action,$unlogUserAction))){
+		if( $controller_class!="ControllerAnswer" && (!isset($_SESSION['email']) && !($controller_class=="ControllerUser" && in_array($action,$unlogUserAction))) || (isset($_SESSION['email']) && $controller_class=="ControllerUser" && in_array($action,$unlogUserAction))){
 			ControllerUser::default();
 		}else{
 			$controller_class::$action();

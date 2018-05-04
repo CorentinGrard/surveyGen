@@ -65,7 +65,7 @@ class ModelQuestionOption extends Model{
 		$class_name='Model'.ucfirst($table_name);
 		$primary_key_1=static::$primary[1];
 		$primary_key_2=static::$primary[2];
-		$sql = "SELECT * from $table_name WHERE $primary_key_1=:idquestion AND $primary_key_2=:idsurvey";
+		$sql = "SELECT o.id,o.description from $table_name q, options o WHERE o.id=q.idoption AND $primary_key_1=:idquestion AND $primary_key_2=:idsurvey";
 		$req_prep = Model::$pdo->prepare($sql);
 		try{
 			$req_prep->execute($data);
@@ -78,12 +78,12 @@ class ModelQuestionOption extends Model{
 			die();
 		}
 		//We get the results in a table
-		$req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
+		$req_prep->setFetchMode(PDO::FETCH_ASSOC);
 		$tab = $req_prep->fetchAll();
 		//If there is no result, we return false
 		if (empty($tab))
 			return false;
-		return $tab[0];
+		return $tab;
 	}
 
 	///constructor

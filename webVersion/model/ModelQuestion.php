@@ -8,13 +8,13 @@ class ModelQuestion extends Model{
 	private $description;
 
 	static protected $object ='question';
-	protected static $primary=array('id','idSurvey');
+	protected static $primary=array('id','idsurvey');
 
 	public static function maxId($primary_value){
 		$table_name=static::$object;
 		$class_name='Model'.ucfirst($table_name);
-		$primary_key=static::$primary[0];
-		$sql = "SELECT MAX('id') FROM $table_name WHERE $primary_key=:primary_v";
+		$primary_key=static::$primary[1];
+		$sql = "SELECT MAX(id) FROM $table_name WHERE $primary_key=:primary_v";
 		$req_prep = Model::$pdo->prepare($sql);
 		$values = array(
 			"primary_v" => $primary_value,
@@ -33,9 +33,10 @@ class ModelQuestion extends Model{
 		$req_prep->setFetchMode(PDO::FETCH_ASSOC);
 		$tab = $req_prep->fetchAll();
 		//If there is no result, we return false
-		if (empty($tab['max']))
+		if (!isset($tab[0]['max'])){
 			return -1;
-		return $tab[0];
+		}
+		return $tab[0]['max'];
 	}
 
 	public static function save($data){
@@ -95,11 +96,12 @@ class ModelQuestion extends Model{
 	public static function selectByIdSurvey($idSurvey){
 		$table_name=static::$object;
 		$class_name='Model'.ucfirst($table_name);
-		$primary_key_2=static::$primary[1];
+		$primary_key_1=static::$primary[1];
 		$sql = "SELECT * from $table_name WHERE $primary_key_1=:idSurvey";
 		$req_prep = Model::$pdo->prepare($sql);
 		try{
-			$req_prep->execute($idSurvey);
+			$req_prep->execute(array(
+				"idSurvey" => $idSurvey));
 		} catch (PDOException $e) {
 			if (Conf::getDebug()) {
 			echo $e->getMessage(); // an error message
@@ -109,12 +111,12 @@ class ModelQuestion extends Model{
 			die();
 		}
 		//We get the results in a table
-		$req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
+		$req_prep->setFetchMode(PDO::FETCH_ASSOC);
 		$tab = $req_prep->fetchAll();
 		//If there is no result, we return false
 		if (empty($tab))
 			return false;
-		return $tab[0];
+		return $tab;
 	}
 
 	//getter

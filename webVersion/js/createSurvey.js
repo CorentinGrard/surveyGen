@@ -39,6 +39,7 @@ $(document).ready(function() {
 			},
 			success : function(data){
 				console.log("Responce Receive");
+				console.log(data);
 				let id=parseInt(data, 10);
 				if(isNaN(id)){
 					$('#error').html('<div class="alert alert-dismissible alert-danger"> <button type="button" class="close" data-dismiss="alert">&times;</button> <strong>Oh snap!</strong> '+data+'</div>')
