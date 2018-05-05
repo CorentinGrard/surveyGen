@@ -126,7 +126,7 @@ class ControllerSurvey {
 			//If everything worked, return OK else return the error
 			if(isset($error)) echo $error;
 			else echo $newSurvey->get('id');
-
+			
 		}
 	}
 
