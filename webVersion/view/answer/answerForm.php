@@ -20,44 +20,56 @@ foreach($questions as $question){
 				<form id="answer">
 					<?php foreach($questions as $key => $question){ ?>
 					<div class="form-group">
-						<label for="Q<?php echo $key; ?>_id"><?php echo htmlspecialchars($question['title']) ?></label>
+						<label for="Q<?php echo $key; ?>_id"><?php echo htmlspecialchars($question['title']) ?></label><br>
 						<?php switch($question['idtype']) {
 							case 1:
-								echo '<textarea id="Q'.$key.'_id" class="form-control" placeholder="Response"></textarea>';
+								echo '<textarea id="Q'.$key.'_id" name="Q'.$key.'_id" class="form-control" placeholder="Response"></textarea>';
 								break;
 							case 2:
-								echo '<input id="Q'.$key.'_id" class="form-control" type="number" value=0>';
+								echo '<input id="Q'.$key.'_id" name="Q'.$key.'_id" class="form-control" type="number" value=0>';
 								break;
 							case 3:
-								echo '<input id="Q'.$key.'_id" class="form-control" type="number" step="0.01" value=0>';
+								echo '<input id="Q'.$key.'_id" name="Q'.$key.'_id" class="form-control" type="number" step="0.01" value=0>';
 								break;
 							case 4:
-								echo '<input id="Q'.$key.'_id" class="form-control" type="date">';
+								echo '<input id="Q'.$key.'_id"name="Q'.$key.'_id" class="form-control" type="date">';
 								break;
 							case 5:
-								echo '<input id="Q'.$key.'_id" class="form-control" type="range" min="0" max="10">';
+								echo '<input id="Q'.$key.'_id" name="Q'.$key.'_id" class="form-control" type="range" min="0" max="10">';
 								break;
 							case 6:
 								foreach($question['options'] as $key2 => $option){
-									echo '<input class="form-control Q'.$key.'_class" type="radio" value='.pow(2,$key2).'> '. htmlspecialchars($option['description']);
+									echo '<div class = "radio">';
+									echo '<input  name="Q'.$key.'_id" type="radio" value='.pow(2,$key2).'> '.htmlspecialchars($option['description']);
+									echo '</div>';
 								}
 								break;
 							case 7:
 								foreach($question['options'] as $key2 => $option){
-									echo '<input class="form-control Q'.$key.'_class" type="radio" value='.pow(2,$key2).'> '. htmlspecialchars($option['description']);
+									echo '<div class = "radio">';
+									echo '<input  name="Q'.$key.'_id" type="radio" value='.pow(2,$key2).'> '.htmlspecialchars($option['description']);
+									echo '</div>';
 								}
-								echo '<input class="form-control Q'.$key.'_class" type="radio" value='.pow(2,$key2+1).'><input type="text" placeholder=Other answer">';					
+								echo '<div class = "radio">';
+								echo '<input  name="Q'.$key.'_id"  type="radio" value='.pow(2,$key2+1).'>  <input type="text" placeholder=Other answer">';
+								echo '</div>';					
 								break;
 							case 8:
 								foreach($question['options'] as $key2 => $option){
-									echo '<input class="form-control Q'.$key.'_class" type="checkbox" value='.pow(2,$key2).'> '. htmlspecialchars($option['description']);
+									echo '<div class = "checkbox">';
+									echo '<input  name="Q'.$key.'_id"  type="checkbox" value='.pow(2,$key2).'> '.htmlspecialchars($option['description']);
+									echo '</div>';
 								}
 								break;
 							case 9:
 								foreach($question['options'] as $key2 => $option){
-									echo '<input class="form-control Q'.$key.'_class" type="checkbox" value='.pow(2,$key2).'> '. htmlspecialchars($option['description']);
+									echo '<div class = "checkbox">';
+									echo '<input  name="Q'.$key.'_id"  type="checkbox" value='.pow(2,$key2).'> '.htmlspecialchars($option['description']);
+									echo '</div>';
 								}
-								echo '<input type="checkbox" class="Q'.$key.'_class" value='.pow(2,$key2+1).'><input type="text" placeholder=Other answer">';					
+								echo '<div class = "checkbox">';
+								echo '<input  name="Q'.$key.'_id"  type="checkbox" class="Q'.$key.'_class" value='.pow(2,$key2+1).'>  <input type="text" placeholder=Other answer">';
+								echo '</div>';					
 								break;
 						}?>
 					</div>
