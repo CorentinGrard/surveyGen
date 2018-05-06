@@ -3,11 +3,12 @@ require(File::build_path(array("view","head.php")));
 ?>
 </head>
 <script>
-var questionsType=[<?php 
+const questionsType=[<?php 
 foreach($questions as $question){
 	echo $question['idtype'].",";
 }
 ?>]
+const id=<?php echo $idSurvey; ?>
 </script>
 <body class="backgroundPhoto">
 	<div class="container">
@@ -39,30 +40,30 @@ foreach($questions as $question){
 								break;
 							case 6:
 								foreach($question['options'] as $key2 => $option){
-									echo '<input class="form-control Q'.$key.'_class" type="radio" value='.pow(2,$key2).'> '. htmlspecialchars($option['description']);
+									echo '<input class="form-control Q'.$key.'_class" type="radio" name="Q'.$key.'_name" value='.pow(2,$key2).'> '. htmlspecialchars($option['description']);
 								}
 								break;
 							case 7:
 								foreach($question['options'] as $key2 => $option){
-									echo '<input class="form-control Q'.$key.'_class" type="radio" value='.pow(2,$key2).'> '. htmlspecialchars($option['description']);
+									echo '<input class="form-control Q'.$key.'_class" type="radio" name="Q'.$key.'_name" value='.pow(2,$key2).'> '. htmlspecialchars($option['description']);
 								}
-								echo '<input class="form-control Q'.$key.'_class" type="radio" value='.pow(2,$key2+1).'><input type="text" placeholder=Other answer">';					
+								echo '<input class="form-control Q'.$key.'_class" type="radio" name="Q'.$key.'_name" value='.pow(2,$key2+1).'><input type="text"  id="Q'.$key.'_text" placeholder=Other answer">';					
 								break;
 							case 8:
 								foreach($question['options'] as $key2 => $option){
-									echo '<input class="form-control Q'.$key.'_class" type="checkbox" value='.pow(2,$key2).'> '. htmlspecialchars($option['description']);
+									echo '<input class="form-control Q'.$key.'_class" type="checkbox" name="Q'.$key.'_name" value='.pow(2,$key2).'> '. htmlspecialchars($option['description']);
 								}
 								break;
 							case 9:
 								foreach($question['options'] as $key2 => $option){
-									echo '<input class="form-control Q'.$key.'_class" type="checkbox" value='.pow(2,$key2).'> '. htmlspecialchars($option['description']);
+									echo '<input class="form-control Q'.$key.'_class" type="checkbox" name="Q'.$key.'_name" value='.pow(2,$key2).'> '. htmlspecialchars($option['description']);
 								}
-								echo '<input type="checkbox" class="Q'.$key.'_class" value='.pow(2,$key2+1).'><input type="text" placeholder=Other answer">';					
+								echo '<input type="checkbox" class="Q'.$key.'_class" name="Q'.$key.'_name" value='.pow(2,$key2+1).'><input type="text" id="Q'.$key.'_text" placeholder=Other answer">';					
 								break;
 						}?>
 					</div>
 					<?php } ?> 
-					<input class="btn btn-primary btn-block" type="button" value="Submit answer">
+					<button id="sendData" class="btn btn-primary" type="button"><i class="fa fa-spinner fa-spin"></i><span>Submit answer</span></button>
 				</form>
 			</div>
 		</div>
