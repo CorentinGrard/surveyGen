@@ -14,7 +14,7 @@ class ModelFreeAnswer extends ModelAnswer{
 		$class_name='Model'.ucfirst($table_name);
 		$primary_key_1=static::$primary[1];
 		$primary_key_2=static::$primary[2];
-		$sql = "SELECT MAX(id) FROM $table_name WHERE $primary_key_1=:primary_v_1 $primary_key_2=:primary_v_2";
+		$sql = "SELECT MAX(id) FROM $table_name WHERE $primary_key_1=:primary_v_1 AND $primary_key_2=:primary_v_2";
 		$req_prep = ModelAnswer::$pdo->prepare($sql);
 		$values = array(
 			"primary_v_1" => $data[0],

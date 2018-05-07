@@ -70,7 +70,6 @@ class ModelAnswer{
 			$sql.=" $key=:$key AND";
 		}
 		$sql=rtrim($sql," AND");
-		Util::aff($key); //TO REMOVE EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 		$req_prep = ModelAnswer::$pdo->prepare($sql);
 		try{
 			$req_prep->execute($data);

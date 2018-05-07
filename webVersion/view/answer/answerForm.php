@@ -12,6 +12,7 @@ const id=<?php echo $idSurvey; ?>
 </script>
 <body class="backgroundPhoto">
 	<div class="container">
+		<div id="error"></div>
 		<div class="card card-register mx-auto mt-5">
 			<div class="card-header">
 				<div><?php echo htmlspecialchars($survey->get('name')); ?></div>

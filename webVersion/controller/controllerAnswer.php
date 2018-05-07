@@ -22,11 +22,15 @@ class ControllerAnswer {
 		$postOrGet=Conf::getPostOrGet();
 		$idSurvey=Util::myGet('idSurvey');
 		$survey=ModelSurvey::select($idSurvey);
-		$questions = ModelQuestion::selectByIdSurvey($idSurvey);
-		foreach($questions as $key => $question){
-			$questions[$key]['options']= ModelQuestionOption::selectByQuestion(array($question['id'], $question['idsurvey']));
-		};
-		require (File::build_path(array ("view",static::$object,"answerForm.php")));
+		if($survey==false){
+			require (File::build_path(array ("view",static::$object,"inexistantSurvey.php")));
+		}else{
+			$questions = ModelQuestion::selectByIdSurvey($idSurvey);
+			foreach($questions as $key => $question){
+				$questions[$key]['options']= ModelQuestionOption::selectByQuestion(array($question['id'], $question['idsurvey']));
+			};
+			require (File::build_path(array ("view",static::$object,"answerForm.php")));
+		}
 	}
 
 	public static function created(){
@@ -39,7 +43,7 @@ class ControllerAnswer {
 
 		//Saving Data
 		$surveyAnsered=ModelSurveyAnswered::save(array(
-			"idUser" => $_SERVER['REMOTE_ADDR'],
+			"iduser" => $_SERVER['REMOTE_ADDR'],
 		));
 		foreach($answer as $key => $question){
 			if($question->type==1 ||$question->type==2 ||$question->type==3 ||$question->type==4 ||$question->type==5){
@@ -64,6 +68,7 @@ class ControllerAnswer {
 				));
 			}
 		}
+		echo "OK";
 	}
 }
 ?>

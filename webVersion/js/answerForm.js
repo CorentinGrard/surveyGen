@@ -25,22 +25,22 @@ $(document).ready(function(){
     for(let i=0;i<questionsType.length;i++){
         if([1,2,3,4,5].indexOf(questionsType[i]) > -1){
             $("#Q"+i+"_id").change(function (x) {
-                answers[i][1]=this.value;
+                answers[i].answer=this.value;
             })
         }else if([8,9].indexOf(questionsType[i]) > -1){
             $('.Q'+i+'_class').change(function(){
-                answers[i][1]=updateAnswer(i);
+                answers[i].answer=updateAnswer(i);
             })
         }else if([6,7].indexOf(questionsType[i]) > -1){
             $('.Q'+i+'_class').change(function(){
                 let res=$('.Q'+i+'_class:checked').val();
-                answers[i][1]=res;
+                answers[i].answer=res;
             })
         }
 
         if(questionsType[i]==7 || questionsType[i]==9){
             $('#Q'+i+'_text').change(function(){
-                answers[i][2]=this.value;
+                answers[i].extraAnswer=this.value;
             })
         }
     }
@@ -66,7 +66,7 @@ $(document).ready(function(){
 					$('#sendData span').text('Submit answer');
 					$('#sendData i').css("display","none");
 				}else{
-					window.location.replace("/view/answer/okAnswer.html");
+					window.location.replace("./view/answer/okAnswer.html");
 				};
 
 			}
