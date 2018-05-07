@@ -53,6 +53,26 @@ class ModelSurveyAnswered extends ModelAnswer{
 				$this->$attribut=$valeur;
 		 }
 	}
+
+	public static function getNbAnswers() {
+		$table_name="surveyanswered";
+		$primary_key=static::$primary;
+		$sql= "SELECT id FROM $table_name";
+		$req_prep=ModelAnswer::$pdo->prepare($sql);
+		try{
+			$req_prep->execute();
+		} catch (PDOException $e) {
+			if (Conf::getDebug()) {
+				echo $e->getMessage(); //an error message
+			} else {
+				echo 'An error occured <a href="./index.php">back to the homepage</a>';
+			}
+			return false;
+		}
+		$req_prep->setFetchMode(PDO::FETCH_ASSOC);
+		$tab = $req_prep->fetchAll();
+		return sizeof($tab);
+	}
 	
 	///constructor
 	public function __construct($id=NULL, $idUser=NULL){

@@ -6,6 +6,8 @@ require_once (File::build_path(array ("model","ModelQuestion.php")));
 require_once (File::build_path(array ("model","ModelQuestionOption.php")));
 require_once (File::build_path(array ("model","ModelOptions.php")));
 require_once (File::build_path(array ("model","ModelTypeOfQuestion.php")));
+require_once (File::build_path(array ("model","ModelAnswer.php")));
+require_once (File::build_path(array ("model","ModelSurveyAnswered.php")));
 require_once (File::build_path(array ("lib","Util.php")));
 require_once (File::build_path(array ("lib","Security.php")));
 class ControllerSurvey {
@@ -156,6 +158,9 @@ class ControllerSurvey {
 		$tabP=ModelProject::selectProjects($_SESSION['email']);
 		$survey=ModelSurvey::select($id);
 		if($survey!=false){
+			$database_name = "survey_".$id;
+			ModelAnswer::Init($database_name);
+			$nbAnswers = ModelSurveyAnswered::getNbAnswers();
 			foreach($tabP as $project){
 				if($survey->get('projectid') == $project->get('id')){
 					$view=array("view", static::$object, "detail.php");
