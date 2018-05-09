@@ -33,8 +33,6 @@ ALTER TABLE QuestionOption ADD CONSTRAINT FKQuestionOp299459 FOREIGN KEY (idOpti
 ALTER TABLE Question ADD CONSTRAINT FKQuestion893077 FOREIGN KEY (idSurvey) REFERENCES Survey (id);
 ALTER TABLE Constraints ADD CONSTRAINT FKConstraint444998 FOREIGN KEY (idQuestion, idSurvey) REFERENCES Question (id, idSurvey);
 
-
-
 INSERT INTO Profession(description) VALUES ('Teacher');
 
 
