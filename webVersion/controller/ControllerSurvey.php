@@ -30,35 +30,6 @@ class ControllerSurvey {
 		$pagetitle='SGS - Create survey';
 		require (File::build_path(array ("view","view.php")));
 	}
-
-	/*private static function generateQuestionHTMLBlock($questionId, $questionTitle, $questionType, $questionDescription, $questionAnswers) {
-		$block = "<div>\n";
-		$block += "<label for=\"$idQuestion\">$questionTitle</label>\n";
-		if ($type == "free") {
-			//<input id=\"Q$idQuestion\" type=\"text\" name=\"$name\" aria-describedby=\"datelHelp\">\n";
-			return $block;
-		}
-		else if (type == "option") {
-			foreach($questionAnswers as $key => $answer){
-				$block += "<input type=\"radio\" name=\"$questionId\" value=\"$answer\"><br>\n";
-			}
-		}
-		else if (type == "multiOption"){
-			foreach($questionAnswers as $key => $answer){
-				$block += "<input type=\"checkbox\" name=\"$questionId\" value=\"$answer\"><br>\n";
-			}
-		}
-		$block += "</div>\n";
-		return $block;
-	}*/
-	/*
-	private static function generateAnswerForm($questionsTab){
-		$formHTML = "<form>\n";
-		foreach($questionsTab as $key => $question){
-			generateQuestionHTMLBlock($question->id, $question->title, $question->type, $question->description, $question->answers);
-		}
-		$formHTML += "</form>";
-	}*/
 	
 	/**
  	 * Save the form's result into the database, create the new database, create a webpage for the answers
@@ -94,11 +65,13 @@ class ControllerSurvey {
 						"idType" => $question->type,
 						"title" => $question->title,
 						"description" => "todo",//TO DO
+						"shortname" => "todo", //TO DO
+						"order" => $key+1,
 					));
 					if($newQuestion==false) $error= "Error while saving question";
 					else{
-						foreach($question->answers as $answer){
-							$description=strtolower($answer->description);
+						foreach($question->answers as $key2 => $answer){
+							$description=$answer->description;
 							$newAnswer=ModelOptions::selectByDescription($description);
 							if($newAnswer==false){
 								$newAnswer=ModelOptions::save(array(
@@ -111,6 +84,7 @@ class ControllerSurvey {
 									"idoption" => $newAnswer->get('id'),
 									"idquestion" => $newQuestion->get('id'),
 									"idsurvey" => $newSurvey->get('id'),
+									"order" => $key2+1,
 								));
 								if($newQuestionOption==false) $error= "Error while saving option";
 							}
@@ -121,9 +95,10 @@ class ControllerSurvey {
 
 			//Creating the new database for the answers
 			// TO CHECK
-			ModelSurvey::createSurveyDatabase($newSurvey->get('id'));
-			//Creating the web page for the answers
-			//TO DO
+			$sql="";
+			$data=array();
+
+			ModelSurvey::createSurveyDatabase($sql,$data);
 
 			//If everything worked, return OK else return the error
 			if(isset($error)) echo $error;

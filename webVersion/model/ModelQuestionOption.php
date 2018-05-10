@@ -3,7 +3,8 @@ class ModelQuestionOption extends Model{
 
 	private $idoption;
     private $idquestion;
-    private $idsurvey;
+	private $idsurvey;
+	private $order;
 
 	static protected $object ='questionOption';
 	static protected $primary=array('idoption','idquestion',"idsurvey");
@@ -87,11 +88,12 @@ class ModelQuestionOption extends Model{
 	}
 
 	///constructor
-	public function __construct($idoption=NULL,$idquestion=NULL, $idsurvey=NULL){
-		if (!is_null($idoption) && !is_null($idquestion) && !is_null($idsurvey)){
+	public function __construct($idoption=NULL,$idquestion=NULL, $idsurvey=NULL, $order=NULL){
+		if (!is_null($idoption) && !is_null($idquestion) && !is_null($idsurvey)&& !is_null($order)){
 			$this->idoption=$idoption;
             $this->idquestion=$idquestion;
-            $this->idsurvey=$idsurvey;
+			$this->idsurvey=$idsurvey;
+			$this->order=$order;
 		}
 	}
 }

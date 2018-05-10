@@ -6,6 +6,8 @@ class ModelQuestion extends Model{
 	private $idtype;
 	private $title;
 	private $description;
+	private $order;
+	private $shortname;
 
 	static protected $object ='question';
 	protected static $primary=array('id','idsurvey');
@@ -134,13 +136,15 @@ class ModelQuestion extends Model{
 	}
 	
 	///constructor
-	public function __construct($id=NULL, $idsurvey=NULL, $idtype=NULL,$description=NULL,$title=NULL, $startDate=NULL, $finalDate=NULL, $DBnName=NULL){
-		if (!is_null($id) && !is_null($idsurvey) && !is_null($idtype) && !is_null($description) && !is_null($title)){
+	public function __construct($id=NULL, $idsurvey=NULL, $idtype=NULL,$title=NULL, $description=NULL, $order=NULL, $shortname=NULL){
+		if (!is_null($id) && !is_null($idsurvey) && !is_null($idtype) && !is_null($description) && !is_null($title)&& !is_null($order)&& !is_null($shortname)){
 			$this->id=$id;
 			$this->idsurvey=$idsurvey;
 			$this->idtype=$idtype;
 			$this->description=$description;
 			$this->title=$title;
+			$this->order=$order;
+			$this->shortname=$shortname;
 		}
 	}
 }

@@ -51,12 +51,10 @@ class ModelSurvey extends Model{
 	 	}
 	}
 
-	public static function createSurveyDatabase($newSurveyId) {
-		$table_name = "survey_".$newSurveyId;
-		$sql = "CREATE DATABASE $table_name WITH TEMPLATE=\"finalDatabase\"";
+	public static function createSurveyDatabase($sql,$data){
 		$req_prep=Model::$pdo->prepare($sql);
 		try{
-			$req_prep->execute();
+			$req_prep->execute($data);
 		} catch (PDOException $e) {
 			if (Conf::getDebug()) {
 				echo $e->getMessage(); // an error message
